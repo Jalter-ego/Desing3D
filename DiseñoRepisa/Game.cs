@@ -12,9 +12,62 @@ public class Game : GameWindow
 
     public Game(int width, int height) : base(width, height, GraphicsMode.Default, "Diseño 3D")
     {
-        Objeto escenario = new Objeto();
-        escenario.add(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
-        this.objetos.Add(escenario);
+        //paredes
+        Objeto pared1 = new Objeto();
+        pared1.add(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
+        this.objetos.Add(pared1);
+        Objeto pared2 = new Objeto();
+        pared2.add(new Vector3(-1, -1, -1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
+        this.objetos.Add(pared2);
+        //repisas
+        Objeto repisa1 = new Objeto();
+        repisa1.add(new Vector3(1, 1, 1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f);
+        this.objetos.Add(repisa1);
+        Objeto repisa2 = new Objeto();
+        repisa2.add(new Vector3(-1, -1, -1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f);
+        this.objetos.Add(repisa2);
+        //cuerpo auto
+        Objeto cuerpo1 = new Objeto();
+        cuerpo1.add(new Vector3(1, 1, 1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f);
+        this.objetos.Add(cuerpo1);
+        Objeto cuerpo2 = new Objeto();
+        cuerpo2.add(new Vector3(-1, -1, -1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f);
+        objetos.Add(cuerpo2);
+        //parte baja auto
+        Objeto cuerpoBajo1 = new Objeto();
+        cuerpoBajo1.add(new Vector3(1, 1, 1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f);
+        this.objetos.Add(cuerpoBajo1);
+        Objeto cuerpoBajo2 = new Objeto();
+        cuerpoBajo2.add(new Vector3(-1, -1, -1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f);
+        this.objetos.Add(cuerpoBajo2);
+        //espejos frontales
+        Objeto frontend1 = new Objeto();
+        frontend1.add(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f);
+        this.objetos.Add(frontend1);
+        Objeto frontend2 = new Objeto();
+        frontend2.add(new Vector3(-1, -1, -1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f);
+        objetos.Add(frontend2);
+        //espejos detras
+        Objeto backend1 = new Objeto();
+        backend1.add(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f);
+        this.objetos.Add(backend1);
+        Objeto backend2 = new Objeto();
+        backend2.add(new Vector3(-1, -1, -1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f);
+        this.objetos.Add(backend2);
+        //laterales Izquierda
+        Objeto lateralIzquierda1 = new Objeto();
+        lateralIzquierda1.add(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f);
+        this.objetos.Add(lateralIzquierda1);
+        Objeto lateralIzquierda2 = new Objeto();
+        lateralIzquierda2.add(new Vector3(-1, -1, -1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f);
+        this.objetos.Add(lateralIzquierda2);
+        //lateral Derecha
+        Objeto lateralDerecha1 = new Objeto();
+        lateralDerecha1.add(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f);
+        this.objetos.Add(lateralDerecha1);
+        Objeto lateralDerecha2 = new Objeto();
+        lateralDerecha2.add(new Vector3(-1, -1, -1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f);
+        this.objetos.Add(lateralDerecha2);
         /*//paredes
         cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
         cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-1, -1, -.15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));

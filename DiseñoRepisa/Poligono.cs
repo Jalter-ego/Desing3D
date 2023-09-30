@@ -38,6 +38,12 @@ public class Poligono
 
         // Cara frontal
         DibujarCara(halfX, halfY, halfZ, -halfX, halfY, halfZ, -halfX, -halfY, halfZ, halfX, -halfY, halfZ);
+        Vector3 cara1 = new Vector3();
+        cara1.X = halfX; cara1.Y = halfY; cara1.Z = halfZ;
+        this.listaDeVertices.Add(cara1);
+        Vector3 cara2 = new Vector3();
+        cara1.X = halfX; cara1.Y = halfY; cara1.Z = halfZ;
+        this.listaDeVertices.Add(cara1);
         // Cara trasera
         DibujarCara(halfX, halfY, -halfZ, -halfX, halfY, -halfZ, -halfX, -halfY, -halfZ, halfX, -halfY, -halfZ);
         // Otras caras (laterales)
