@@ -18,5 +18,19 @@ namespace DiseñoRepisa
         {
             this.listaDePartes.Add(poligono);
         }
+
+        public void delete(Poligono poligono)
+        {
+            int i = this.listaDePartes.IndexOf(poligono);
+            this.listaDePartes.RemoveAt(i);
+        }
+
+        public void dibujarPoligono()
+        {
+            foreach (Poligono poligono in listaDePartes)
+            {
+                poligono.Dibujar();
+            }
+        }
     }
 }

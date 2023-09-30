@@ -14,60 +14,95 @@ public class Game : GameWindow
     {
         //paredes
         Objeto pared1 = new Objeto();
-        pared1.add(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
+        pared1.addParte(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
         this.objetos.Add(pared1);
+
         Objeto pared2 = new Objeto();
-        pared2.add(new Vector3(-1, -1, -1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
+        pared2.addParte(new Vector3(-1, -1, -1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
         this.objetos.Add(pared2);
         //repisas
         Objeto repisa1 = new Objeto();
-        repisa1.add(new Vector3(1, 1, 1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f);
+        repisa1.addParte(new Vector3(1, 1, 1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f);
         this.objetos.Add(repisa1);
+
         Objeto repisa2 = new Objeto();
-        repisa2.add(new Vector3(-1, -1, -1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f);
+        repisa2.addParte(new Vector3(-1, -1, -1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f);
         this.objetos.Add(repisa2);
         //cuerpo auto
         Objeto cuerpo1 = new Objeto();
-        cuerpo1.add(new Vector3(1, 1, 1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f);
+        cuerpo1.addParte(new Vector3(1, 1, 1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f);
         this.objetos.Add(cuerpo1);
         Objeto cuerpo2 = new Objeto();
-        cuerpo2.add(new Vector3(-1, -1, -1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f);
+        cuerpo2.addParte(new Vector3(-1, -1, -1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f);
         objetos.Add(cuerpo2);
         //parte baja auto
         Objeto cuerpoBajo1 = new Objeto();
-        cuerpoBajo1.add(new Vector3(1, 1, 1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f);
+        cuerpoBajo1.addParte(new Vector3(1, 1, 1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f);
         this.objetos.Add(cuerpoBajo1);
+
         Objeto cuerpoBajo2 = new Objeto();
-        cuerpoBajo2.add(new Vector3(-1, -1, -1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f);
+        cuerpoBajo2.addParte(new Vector3(-1, -1, -1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f);
         this.objetos.Add(cuerpoBajo2);
         //espejos frontales
         Objeto frontend1 = new Objeto();
-        frontend1.add(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f);
+        frontend1.addParte(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f);
         this.objetos.Add(frontend1);
+
         Objeto frontend2 = new Objeto();
-        frontend2.add(new Vector3(-1, -1, -1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f);
+        frontend2.addParte(new Vector3(-1, -1, -1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f);
         objetos.Add(frontend2);
         //espejos detras
         Objeto backend1 = new Objeto();
-        backend1.add(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f);
+        backend1.addParte(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f);
         this.objetos.Add(backend1);
+
         Objeto backend2 = new Objeto();
-        backend2.add(new Vector3(-1, -1, -1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f);
+        backend2.addParte(new Vector3(-1, -1, -1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f);
         this.objetos.Add(backend2);
         //laterales Izquierda
         Objeto lateralIzquierda1 = new Objeto();
-        lateralIzquierda1.add(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f);
+        lateralIzquierda1.addParte(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f);
         this.objetos.Add(lateralIzquierda1);
+
         Objeto lateralIzquierda2 = new Objeto();
-        lateralIzquierda2.add(new Vector3(-1, -1, -1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f);
+        lateralIzquierda2.addParte(new Vector3(-1, -1, -1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f);
         this.objetos.Add(lateralIzquierda2);
         //lateral Derecha
         Objeto lateralDerecha1 = new Objeto();
-        lateralDerecha1.add(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f);
+        lateralDerecha1.addParte(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f);
         this.objetos.Add(lateralDerecha1);
+
         Objeto lateralDerecha2 = new Objeto();
-        lateralDerecha2.add(new Vector3(-1, -1, -1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f);
+        lateralDerecha2.addParte(new Vector3(-1, -1, -1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f);
         this.objetos.Add(lateralDerecha2);
+
+        //Ruedas auto 1
+        Objeto auto1Rueda1 = new Objeto();
+        auto1Rueda1.addParte(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .37f);
+        this.objetos.Add(auto1Rueda1);
+        Objeto auto1Rueda2 = new Objeto();
+        auto1Rueda2.addParte(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .37f);
+        this.objetos.Add(auto1Rueda2);
+        Objeto auto1Rueda3 = new Objeto();
+        auto1Rueda3.addParte(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .275f);
+        this.objetos.Add(auto1Rueda3);
+        Objeto auto1Rueda4 = new Objeto();
+        auto1Rueda4.addParte(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f);
+        this.objetos.Add(auto1Rueda4);
+
+        //Ruedas auto 2
+        Objeto auto2Rueda1 = new Objeto();
+        auto2Rueda1.addParte(new Vector3(-1, -1, -1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .37f);
+        this.objetos.Add(auto2Rueda1);
+        Objeto auto2Rueda2 = new Objeto();
+        auto2Rueda2.addParte(new Vector3(-1, -1, -1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .37f);
+        this.objetos.Add(auto2Rueda2);
+        Objeto auto2Rueda3 = new Objeto();
+        auto2Rueda3.addParte(new Vector3(-1, -1, -1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .275f);
+        this.objetos.Add(auto2Rueda3);
+        Objeto auto2Rueda4 = new Objeto();
+        auto2Rueda4.addParte(new Vector3(-1, -1, -1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f);
+        this.objetos.Add(auto2Rueda4);
         /*//paredes
         cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
         cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-1, -1, -.15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
@@ -147,17 +182,10 @@ public class Game : GameWindow
 
         // Aplica una rotación al dibujo
         GL.Rotate(angle, Vector3.UnitY);
-        foreach (Objeto obj in objetos)
+
+        foreach (Objeto objeto in objetos)
         {
-            List<Partes> listPartes = obj.listaDePartes;
-            foreach (Partes partes in listPartes)
-            {
-                List<Poligono> listPoligonos = partes.listaDePartes;
-                foreach (Poligono polig in listPoligonos)
-                {
-                    polig.Dibujar();
-                }
-            }
+            objeto.dibujarParte();
         }
 
         // Dibuja la pared vertical (un cuadrado grande)

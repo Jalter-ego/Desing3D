@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Poligono
 {
-    private List<Vector3> listaDeVertices = new List<Vector3>();
+    private List<Vector3> listaDeVertices;
     private Vector3 centro;
     private Vector3 dimensiones;
     private Color4 color;
@@ -16,6 +16,7 @@ public class Poligono
     public Poligono(Vector3 centro, Vector3 dimensiones, Color4 color, float desplazamientoX, 
         float desplazamientoY, float desplazamientoZ)
     {
+        this.listaDeVertices = new List<Vector3>();
         this.centro = centro;
         this.dimensiones = dimensiones;
         this.color = color;
@@ -24,12 +25,22 @@ public class Poligono
         this.desplazamientoZ = desplazamientoZ;
     }
 
+    public void addVertice(float x, float y, float z)
+    {
+        this.listaDeVertices.Add(new Vector3(x,y,z));
+    }
+
+    public void deleteVertice(float x, float y, float z)
+    {
+        this.listaDeVertices.Remove(new Vector3(x, y, z));
+    }
+
     public void Dibujar()
     {
         GL.PushMatrix();
         GL.Translate(centro + new Vector3(desplazamientoX, desplazamientoY, desplazamientoZ));
 
-        GL.Begin(PrimitiveType.Quads);
+        GL.Begin(PrimitiveType.Polygon);
         GL.Color4(color);
 
         float halfX = dimensiones.X / 2.0f;
@@ -37,32 +48,59 @@ public class Poligono
         float halfZ = dimensiones.Z / 2.0f;
 
         // Cara frontal
-        DibujarCara(halfX, halfY, halfZ, -halfX, halfY, halfZ, -halfX, -halfY, halfZ, halfX, -halfY, halfZ);
-        Vector3 cara1 = new Vector3();
-        cara1.X = halfX; cara1.Y = halfY; cara1.Z = halfZ;
-        this.listaDeVertices.Add(cara1);
-        Vector3 cara2 = new Vector3();
-        cara1.X = halfX; cara1.Y = halfY; cara1.Z = halfZ;
-        this.listaDeVertices.Add(cara1);
+
+        this.addVertice(halfX, halfY, halfZ);
+        this.addVertice(-halfX, halfY, halfZ);
+        this.addVertice(-halfX, -halfY, halfZ);
+        this.addVertice(halfX, -halfY, halfZ);
+        this.DibujarCara(0);
+
         // Cara trasera
-        DibujarCara(halfX, halfY, -halfZ, -halfX, halfY, -halfZ, -halfX, -halfY, -halfZ, halfX, -halfY, -halfZ);
+
+        this.addVertice(halfX, halfY, -halfZ);
+        this.addVertice(-halfX, halfY, -halfZ);
+        this.addVertice(-halfX, -halfY, -halfZ);
+        this.addVertice(halfX, -halfY, -halfZ);
+        this.DibujarCara(4);
+
         // Otras caras (laterales)
-        DibujarCara(halfX, halfY, halfZ, halfX, halfY, -halfZ, halfX, -halfY, -halfZ, halfX, -halfY, halfZ);
-        DibujarCara(-halfX, halfY, halfZ, -halfX, halfY, -halfZ, -halfX, -halfY, -halfZ, -halfX, -halfY, halfZ);
-        DibujarCara(halfX, halfY, halfZ, -halfX, halfY, halfZ, -halfX, halfY, -halfZ, halfX, halfY, -halfZ);
-        DibujarCara(halfX, -halfY, halfZ, -halfX, -halfY, halfZ, -halfX, -halfY, -halfZ, halfX, -halfY, -halfZ);
+
+        this.addVertice(halfX, halfY, halfZ);
+        this.addVertice(halfX, halfY, -halfZ);
+        this.addVertice(halfX, -halfY, -halfZ);
+        this.addVertice(halfX, -halfY, halfZ);
+        this.DibujarCara(8);
+
+        this.addVertice(-halfX, halfY, halfZ);
+        this.addVertice(-halfX, halfY, -halfZ);
+        this.addVertice(-halfX, -halfY, -halfZ);
+        this.addVertice(-halfX, -halfY, halfZ);
+        this.DibujarCara(12);
+
+
+        this.addVertice(halfX, halfY, halfZ);
+        this.addVertice(-halfX, halfY, halfZ);
+        this.addVertice(-halfX, halfY, -halfZ);
+        this.addVertice(halfX, halfY, -halfZ);
+        this.DibujarCara(16);
+
+
+        this.addVertice(halfX, -halfY, halfZ);
+        this.addVertice(-halfX, -halfY, halfZ);
+        this.addVertice(-halfX, -halfY, -halfZ);
+        this.addVertice(halfX, -halfY, -halfZ);
+        this.DibujarCara(20);
 
         GL.End();
         GL.PopMatrix();
     }
 
-    private void DibujarCara(float x1, float y1, float z1, float x2, float y2, float z2, 
-        float x3, float y3, float z3, float x4, float y4, float z4)
+    private void DibujarCara(int i)
     {
-        GL.Vertex3(x1, y1, z1);
-        GL.Vertex3(x2, y2, z2);
-        GL.Vertex3(x3, y3, z3);
-        GL.Vertex3(x4, y4, z4);
+        GL.Vertex3(this.listaDeVertices[i]);
+        GL.Vertex3(this.listaDeVertices[i+1]);
+        GL.Vertex3(this.listaDeVertices[i+2]);
+        GL.Vertex3(this.listaDeVertices[i+3]);
     }
 }
 
