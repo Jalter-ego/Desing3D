@@ -50,8 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cubo.cs" />
+    <Compile Include="Objeto.cs" />
+    <Compile Include="Poligono.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Partes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

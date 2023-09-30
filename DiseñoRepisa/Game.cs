@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DiseñoRepisa;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -7,52 +8,54 @@ using OpenTK.Graphics.OpenGL;
 public class Game : GameWindow
 {
     private float angle = 0.0f;
-    private List<Cubo> cubos = new List<Cubo>();
+    private List<Objeto> objetos = new List<Objeto>();
 
     public Game(int width, int height) : base(width, height, GraphicsMode.Default, "Diseño 3D")
     {
-        //paredes
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-1, -1, -.15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
+        Objeto escenario = new Objeto();
+        escenario.add(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
+        this.objetos.Add(escenario);
+        /*//paredes
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-1, -1, -.15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
         //repisa
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-1, -.04f, -.4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-1, -.04f, -.4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f));
         //cuerpo auto
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.16f, -.04f, -.16f), new Color4(0.0f, 0.5f, 1.0f, 1f), .24f, .34f, .32f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.16f, -.04f, -.16f), new Color4(0.0f, 0.5f, 1.0f, 1f), .24f, .34f, .32f));
         //parte baja
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.28f, -.04f, -.16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.28f, -.04f, -.16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f));
         //espejos
         //parte detras
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.0f, -.035f, -.12f), new Color4(0.8f, 0.8f, 1.0f, 1f), .3209f, .34f, .32f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.0f, -.035f, -.12f), new Color4(0.8f, 0.8f, 1.0f, 1f), .3209f, .34f, .32f));
         //parte delantera
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.0f, -.035f, -.12f), new Color4(0.8f, 0.8f, 1.0f, 1f), .1585f, .34f, .32f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.0f, -.035f, -.12f), new Color4(0.8f, 0.8f, 1.0f, 1f), .1585f, .34f, .32f));
         //laterales
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.065f, -.039f, -.0f), new Color4(0.8f, 0.8f, 1.0f, 1f), .2f, .34f, .4009f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.065f, -.039f, -.0f), new Color4(0.8f, 0.8f, 1.0f, 1f), .2f, .34f, .4009f));
 
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.065f, -.039f, -.0f), new Color4(0.8f, 0.8f, 1.0f, 1f), .275f, .34f, .4009f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.065f, -.039f, -.0f), new Color4(0.8f, 0.8f, 1.0f, 1f), .275f, .34f, .4009f));
 
         //ruedas
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .37f));
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .37f));
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .275f));
-        cubos.Add(new Cubo(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .37f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .37f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .275f));
+        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f));
 
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .37f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .37f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .275f));
-        cubos.Add(new Cubo(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .37f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .37f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .275f));
+        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f));*/
     }
-
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
-        GL.Enable(EnableCap.DepthTest);
+       GL.Enable(EnableCap.DepthTest);
         GL.ClearColor(0.1f, 0.12f, 0.13f, 0.1f);
     }
 
@@ -91,9 +94,17 @@ public class Game : GameWindow
 
         // Aplica una rotación al dibujo
         GL.Rotate(angle, Vector3.UnitY);
-        foreach (var cubo in cubos)
+        foreach (Objeto obj in objetos)
         {
-            cubo.Dibujar(); // Dibuja cada cubo en la lista
+            List<Partes> listPartes = obj.listaDePartes;
+            foreach (Partes partes in listPartes)
+            {
+                List<Poligono> listPoligonos = partes.listaDePartes;
+                foreach (Poligono polig in listPoligonos)
+                {
+                    polig.Dibujar();
+                }
+            }
         }
 
         // Dibuja la pared vertical (un cuadrado grande)

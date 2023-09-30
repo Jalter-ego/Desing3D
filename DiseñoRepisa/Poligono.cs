@@ -1,9 +1,11 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
+using System.Collections.Generic;
 
-public class Cubo
+public class Poligono
 {
+    private List<Vector3> listaDeVertices = new List<Vector3>();
     private Vector3 centro;
     private Vector3 dimensiones;
     private Color4 color;
@@ -11,7 +13,8 @@ public class Cubo
     private float desplazamientoY;
     private float desplazamientoZ;
 
-    public Cubo(Vector3 centro, Vector3 dimensiones, Color4 color, float desplazamientoX, float desplazamientoY, float desplazamientoZ)
+    public Poligono(Vector3 centro, Vector3 dimensiones, Color4 color, float desplazamientoX, 
+        float desplazamientoY, float desplazamientoZ)
     {
         this.centro = centro;
         this.dimensiones = dimensiones;
@@ -35,10 +38,8 @@ public class Cubo
 
         // Cara frontal
         DibujarCara(halfX, halfY, halfZ, -halfX, halfY, halfZ, -halfX, -halfY, halfZ, halfX, -halfY, halfZ);
-
         // Cara trasera
         DibujarCara(halfX, halfY, -halfZ, -halfX, halfY, -halfZ, -halfX, -halfY, -halfZ, halfX, -halfY, -halfZ);
-
         // Otras caras (laterales)
         DibujarCara(halfX, halfY, halfZ, halfX, halfY, -halfZ, halfX, -halfY, -halfZ, halfX, -halfY, halfZ);
         DibujarCara(-halfX, halfY, halfZ, -halfX, halfY, -halfZ, -halfX, -halfY, -halfZ, -halfX, -halfY, halfZ);
@@ -49,7 +50,8 @@ public class Cubo
         GL.PopMatrix();
     }
 
-    private void DibujarCara(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4)
+    private void DibujarCara(float x1, float y1, float z1, float x2, float y2, float z2, 
+        float x3, float y3, float z3, float x4, float y4, float z4)
     {
         GL.Vertex3(x1, y1, z1);
         GL.Vertex3(x2, y2, z2);
