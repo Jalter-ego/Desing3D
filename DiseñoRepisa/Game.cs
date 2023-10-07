@@ -9,11 +9,107 @@ public class Game : GameWindow
 {
     private float angle = 0.0f;
     private List<Objeto> objetos = new List<Objeto>();
+    //escenario1
+    private Escenario escenario1;
+    //escenario2
+    private Escenario escenario2;
 
     public Game(int width, int height) : base(width, height, GraphicsMode.Default, "Diseño 3D")
     {
+        this.escenario1 = new Escenario(new Vector3(1, 1, 1));
+        this.escenario2 = new Escenario(new Vector3(-1, -1, -1));
+    }
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+        GL.Enable(EnableCap.DepthTest);
+        GL.ClearColor(0.1f, 0.12f, 0.13f, 0.1f);
+        this.CargarElementos();
+    }
+
+    private void CargarElementos()
+    {
+        //----------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------
+        //Pared1
+        Objeto objetoPared1 = new Objeto();
+        Partes partePared1 = new Partes();
+        Poligono poligonoPared1 = new Poligono(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
+
+        partePared1.add(poligonoPared1);
+        objetoPared1.addParte(partePared1);
+        escenario1.addObjeto("Pared1", objetoPared1);
+
+        //Pared2
+        Objeto objetoPared2 = new Objeto();
+        Partes partePared2 = new Partes();
+        Poligono poligonoPared2 = new Poligono(new Vector3(-1, -1, -1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
+
+        partePared2.add(poligonoPared2);
+        objetoPared2.addParte(partePared2);
+        escenario2.addObjeto("Pared1", objetoPared2);
+
+        //Auto1
+        Objeto auto1 = new Objeto();
+
+        Partes parteAutoArriba1 = new Partes();
+        Poligono poligonoAutoArriba1 = new Poligono(new Vector3(1, 1, 1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f);
+
+        Partes parteAutoAbajo1 = new Partes();
+        Poligono poligonoAutoAbajo1 = new Poligono(new Vector3(1, 1, 1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f);
+
+        Partes parteEspejoFrontend1 = new Partes();
+        Poligono poligonoEspejoFrontend1 = new Poligono(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f);
+
+        Partes parteEspejoBakend1 = new Partes();
+        Poligono poligonoEspejoBakend1 = new Poligono(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f);
+
+        Partes parteEspejoLadoIzq1 = new Partes();
+        Poligono poligonoEspejoLadoIzq1 = new Poligono(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f);
+
+        Partes parteEspejoLadoDer1 = new Partes();
+        Poligono poligonoEspejoLadoDer1 = new Poligono(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f);
+
+
+
+        parteAutoArriba1.add(poligonoAutoArriba1);
+        parteAutoAbajo1.add(poligonoAutoAbajo1);
+        parteEspejoFrontend1.add(poligonoEspejoFrontend1);
+        parteEspejoBakend1.add(poligonoEspejoBakend1);
+        parteEspejoLadoIzq1.add(poligonoEspejoLadoIzq1);
+        parteEspejoLadoDer1.add(poligonoEspejoLadoDer1);
+
+        auto1.addParte(parteAutoArriba1);
+        auto1.addParte(parteAutoAbajo1);
+        auto1.addParte(parteEspejoFrontend1);
+        auto1.addParte(parteEspejoBakend1);
+        auto1.addParte(parteEspejoLadoIzq1);
+        auto1.addParte(parteEspejoLadoDer1);
+
+        escenario1.addObjeto("Auto1",auto1);
+
+
+
+//----------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------
+
+        //repisa1
+        Objeto objetoRespisa1 = new Objeto();
+        Partes parteRepisa1 = new Partes();
+        Poligono poligonoRepisa1 = new Poligono(new Vector3(1, 1, 1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f);
+        parteRepisa1.add(poligonoRepisa1);
+        objetoRespisa1.addParte(parteRepisa1);
+        escenario1.addObjeto("Repisa1",objetoRespisa1);
+        //repisa2
+        Objeto objetoRespisa2 = new Objeto();
+        Partes parteRepisa2 = new Partes();
+        Poligono poligonoRepisa2 = new Poligono(new Vector3(-1, -1, -1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f);
+        parteRepisa2.add(poligonoRepisa2);
+        objetoRespisa2.addParte(parteRepisa2);
+        escenario2.addObjeto("Repisa1", objetoRespisa2);
         //paredes
-        Objeto pared1 = new Objeto();
+
+        /*Objeto pared1 = new Objeto();
         pared1.addParte(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0);
         this.objetos.Add(pared1);
 
@@ -102,49 +198,7 @@ public class Game : GameWindow
         this.objetos.Add(auto2Rueda3);
         Objeto auto2Rueda4 = new Objeto();
         auto2Rueda4.addParte(new Vector3(-1, -1, -1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f);
-        this.objetos.Add(auto2Rueda4);
-        /*//paredes
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(1, 1, .15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-1, -1, -.15f), new Color4(.6f, .3f, .0f, 1.0f), 0, 0, 0));
-        //repisa
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(1, .04f, .4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-1, -.04f, -.4f), new Color4(0.87f, 0.72f, 0.53f, 1.0f), 0, .22f, .275f));
-        //cuerpo auto
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.16f, .04f, .16f), new Color4(0.0f, 0.5f, 1.0f, 1.0f), .24f, .34f, .32f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.16f, -.04f, -.16f), new Color4(0.0f, 0.5f, 1.0f, 1f), .24f, .34f, .32f));
-        //parte baja
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.28f, .04f, .16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.28f, -.04f, -.16f), new Color4(.0f, .5f, 1f, 1.0f), .23f, .3f, .32f));
-        //espejos
-        //parte detras
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .3209f, .34f, .32f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.0f, -.035f, -.12f), new Color4(0.8f, 0.8f, 1.0f, 1f), .3209f, .34f, .32f));
-        //parte delantera
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.0f, .035f, .12f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .1585f, .34f, .32f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.0f, -.035f, -.12f), new Color4(0.8f, 0.8f, 1.0f, 1f), .1585f, .34f, .32f));
-        //laterales
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .2f, .34f, .4009f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.065f, -.039f, -.0f), new Color4(0.8f, 0.8f, 1.0f, 1f), .2f, .34f, .4009f));
-
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.065f, .039f, .0f), new Color4(0.8f, 0.8f, 1.0f, 1.0f), .275f, .34f, .4009f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.065f, -.039f, -.0f), new Color4(0.8f, 0.8f, 1.0f, 1f), .275f, .34f, .4009f));
-
-        //ruedas
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .37f));
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .37f));
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .275f));
-        cubos.Add(new Poligono(new Vector3(1, 1, 1), new Vector3(.04f, .04f, .03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f));
-
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .37f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .37f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.16f, .26f, .275f));
-        cubos.Add(new Poligono(new Vector3(-1, -1, -1), new Vector3(-.04f, -.04f, -.03f), new Color4(0, 0, 0, 1.0f), 0.32f, .26f, .275f));*/
-    }
-    protected override void OnLoad(EventArgs e)
-    {
-        base.OnLoad(e);
-       GL.Enable(EnableCap.DepthTest);
-        GL.ClearColor(0.1f, 0.12f, 0.13f, 0.1f);
+        this.objetos.Add(auto2Rueda4);*/
     }
 
     protected override void OnResize(EventArgs e)
@@ -183,10 +237,8 @@ public class Game : GameWindow
         // Aplica una rotación al dibujo
         GL.Rotate(angle, Vector3.UnitY);
 
-        foreach (Objeto objeto in objetos)
-        {
-            objeto.dibujarParte();
-        }
+        escenario1.dibujar();
+        escenario2.dibujar();
 
         // Dibuja la pared vertical (un cuadrado grande)
         /*GL.Begin(PrimitiveType.Quads);

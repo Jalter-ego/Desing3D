@@ -12,11 +12,8 @@ namespace DiseñoRepisa
             this.listaDePartes = new List<Partes>();
         }
 
-        public void addParte(Vector3 centro,Vector3 dimensiones, Color4 color, float x, float y, float z)
+        public void addParte(Partes nuevaParte)
         {
-            Poligono nuevoPoligono = new Poligono(centro,dimensiones, color, x, y, z);
-            Partes nuevaParte = new Partes();
-            nuevaParte.add(nuevoPoligono);
             listaDePartes.Add(nuevaParte);
         }
 
