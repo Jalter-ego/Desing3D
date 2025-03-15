@@ -12,6 +12,8 @@ namespace Diseño3D
         {
             using (var game = new Game())
             {
+                PanelDeControl panel = new PanelDeControl(game);
+                panel.Show();
                 game.Run(60.0);  
             }
         }
