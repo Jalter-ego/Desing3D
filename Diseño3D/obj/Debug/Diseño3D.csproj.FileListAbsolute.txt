@@ -1,0 +1,11 @@
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\Diseño3D.exe.config
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\Diseño3D.exe
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\Diseño3D.pdb
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\OpenTK.dll
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\OpenTK.pdb
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\OpenTK.xml
+C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.csproj.CopyComplete
+C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.exe
+C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.pdb
