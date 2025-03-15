@@ -42,8 +42,23 @@ namespace Diseño3D
                 100.0f); // Distancia del plano lejano
             GL.LoadMatrix(ref projection); // Cargar la matriz de proyección
 
+            // Utilizamos Matrix4.Perspective para crear la proyección en perspectiva
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
+                MathHelper.DegreesToRadians(45.0f), // Campo de visión de 45 grados
+                Width / (float)Height, // Relación de aspecto
+                0.1f, // Distancia del plano cercano
+                100.0f); // Distancia del plano lejano
+            GL.LoadMatrix(ref projection); // Cargar la matriz de proyección
+
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
+
+            // Configura la cámara usando LookAt
+            Matrix4 modelview = Matrix4.LookAt(
+                new Vector3(1.5f, 2f, 3.5f), // Posición de la cámara
+                new Vector3(0.0f, 0.1f, 0.0f), // Punto de mira
+                Vector3.UnitY); // Vector "arriba"
+            GL.LoadMatrix(ref modelview);
 
             // Configura la cámara usando LookAt
             Matrix4 modelview = Matrix4.LookAt(
@@ -212,6 +227,20 @@ namespace Diseño3D
         {
             GL.Begin(PrimitiveType.Lines);
 
+            // Eje X (Rojo)
+            GL.Color3(1.0f, 0.0f, 0.0f);
+            GL.Vertex3(-2.0f, 0.0f, 0.0f);
+            GL.Vertex3(2.0f, 0.0f, 0.0f);
+
+            // Eje Y (Verde)
+            GL.Color3(0.0f, 1.0f, 0.0f);
+            GL.Vertex3(0.0f, -2.0f, 0.0f);
+            GL.Vertex3(0.0f, 2.0f, 0.0f);
+
+            // Eje Z (Azul)
+            GL.Color3(0.0f, 0.0f, 1.0f);
+            GL.Vertex3(0.0f, 0.0f, -2.0f);
+            GL.Vertex3(0.0f, 0.0f, 2.0f);
             // Eje X (Rojo)
             GL.Color3(1.0f, 0.0f, 0.0f);
             GL.Vertex3(-2.0f, 0.0f, 0.0f);
