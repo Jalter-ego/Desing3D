@@ -29,25 +29,35 @@ namespace Diseño3D
             base.OnRenderFrame(e);
 
             GL.Enable(EnableCap.DepthTest);
-
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);  // Limpiar la pantalla
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            GL.Ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f); // Proyección ortogonal
+
+            // Utilizamos Matrix4.Perspective para crear la proyección en perspectiva
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
+                MathHelper.DegreesToRadians(45.0f), // Campo de visión de 45 grados
+                Width / (float)Height, // Relación de aspecto
+                0.1f, // Distancia del plano cercano
+                100.0f); // Distancia del plano lejano
+            GL.LoadMatrix(ref projection); // Cargar la matriz de proyección
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
 
-            // Aquí movemos la cámara. Se mueve 0.5 en el eje X (derecha) y 0.5 en el eje Y (arriba)
-            GL.Translate(posX - 0.5f, posY - 0.5f, posZ -.5f); // Desplazamos la cámara
+            // Configura la cámara usando LookAt
+            Matrix4 modelview = Matrix4.LookAt(
+                new Vector3(1.5f, 2f, 3.5f), // Posición de la cámara
+                new Vector3(0.0f, 0.1f, 0.0f), // Punto de mira
+                Vector3.UnitY); // Vector "arriba"
+            GL.LoadMatrix(ref modelview);
 
-            // Dibujamos los ejes y los objetos
             DrawAxes();
             DrawU();
 
             SwapBuffers();
         }
+
 
         private void DrawU()
         {
@@ -170,19 +180,20 @@ namespace Diseño3D
         {
             GL.Begin(PrimitiveType.Lines);
 
-            // Dibuja el eje X (color rojo)
-            GL.Color3(1.0f, 0.0f, 0.0f); // Rojo
-            GL.Vertex3(-1.0f, 0.0f, 0.0f); // Punto inicial (X negativo)
-            GL.Vertex3(1.0f, 0.0f, 0.0f);  // Punto final (X positivo)
+            // Eje X (Rojo)
+            GL.Color3(1.0f, 0.0f, 0.0f);
+            GL.Vertex3(-2.0f, 0.0f, 0.0f);
+            GL.Vertex3(2.0f, 0.0f, 0.0f);
 
-            GL.Color3(.0f, 1.0f, 0.0f); // Rojo
-            GL.Vertex3(.0f, -1.0f, 0.0f); // Punto inicial (X negativo)
-            GL.Vertex3(.0f, 1.0f, 0.0f);  // Punto final (X positivo)
+            // Eje Y (Verde)
+            GL.Color3(0.0f, 1.0f, 0.0f);
+            GL.Vertex3(0.0f, -2.0f, 0.0f);
+            GL.Vertex3(0.0f, 2.0f, 0.0f);
 
-            // Dibuja el eje Z (color azul)
-            GL.Color3(0.0f, 0.0f, 1.0f); // Azul
-            GL.Vertex3(0.0f, 0.0f, -1.0f); // Punto inicial (Z negativo)
-            GL.Vertex3(0.0f, 0.0f, 1.0f);  // Punto final (Z positivo)
+            // Eje Z (Azul)
+            GL.Color3(0.0f, 0.0f, 1.0f);
+            GL.Vertex3(0.0f, 0.0f, -2.0f);
+            GL.Vertex3(0.0f, 0.0f, 2.0f);
 
             GL.End();
         }
