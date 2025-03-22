@@ -31,5 +31,10 @@ namespace Diseño3D
 
             game.setCentro(x, y, z);
         }
+
+        private void textX_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

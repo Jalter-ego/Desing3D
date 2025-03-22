@@ -11,7 +11,7 @@ namespace Diseño3D
         private float rotationX = 0.0f;
         private float rotationY = 0.0f;
 
-        public float posX = 0.5f;
+        public float posX = 0.0f;
         public float posY = 0.0f;
         public float posZ = 0.0f;
 
@@ -59,6 +59,164 @@ namespace Diseño3D
             SwapBuffers();
         }
 
+        public void setCentro(float x, float y, float z)
+        {
+            this.posX = x;
+            this.posY = y;
+            this.posZ = z;
+        }
+
+        private void DrawU()
+        {
+            GL.PushMatrix(); 
+            GL.Rotate(rotationX, 1.0f, 0.0f, 0.0f);  
+            GL.Rotate(rotationY, 0.0f, 1.0f, 0.0f);
+
+            GL.Color3(1.0f, 0.3f, 0.3f);  
+            GL.Begin(PrimitiveType.Quads);
+            
+            // Base 
+            // Parte delantera
+            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.25f + posZ);    
+            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);     
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+
+            // Parte trasera
+            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.15f + posZ);    
+            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);     
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+
+            // Parte arriba
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);     
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+
+            // Parte abajo
+            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.25f + posZ);    
+            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.15f + posZ);     
+            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.15f + posZ);    
+
+            // Lado derecho
+            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+
+            // Lado izquierdo
+            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.25f + posZ);  
+            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.15f + posZ);  
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);  
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);   
+
+            // Columna derecha
+            // Parte delantera
+            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.25f + posZ);    
+            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.25f + posZ);    
+
+            // Parte trasera
+            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.15f + posZ);    
+            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.15f + posZ);    
+
+            // Parte arriba
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+
+            // Parte abajo
+            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.25f + posZ);    
+            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.15f + posZ);    
+
+            // Lado derecho
+            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.25f + posZ);     
+            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.15f + posZ);     
+            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.25f + posZ);   
+
+            // Lado izquierdo
+            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.25f + posZ);  
+            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.15f + posZ);
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);   
+            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+
+            // Columna izquierda
+            // Parte delantera
+            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.25f + posZ);    
+            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.25f + posZ);     
+            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.25f + posZ);     
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+
+            // Parte trasera
+            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.15f + posZ);    
+            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.15f + posZ);     
+            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.15f + posZ);     
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+
+            // Parte arriba
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.25f + posZ);     
+            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.15f + posZ);     
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+
+            // Parte abajo
+            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.25f + posZ);    
+            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.25f + posZ);    
+            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.15f + posZ);    
+            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.15f + posZ);
+
+            // Lado izquierdo
+            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.25f + posZ);  
+            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.15f + posZ);  
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);  
+            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);  
+
+            // Lado derecho
+            GL.Color3(0.1f, 0.2f, 0.2f);
+            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.25f + posZ);   
+            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.15f + posZ);   
+            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.15f + posZ);   
+            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.25f + posZ);    
+            
+
+
+
+            GL.End();
+            GL.PopMatrix();
+        }
+
+        private void DrawAxes()
+        {
+            GL.Begin(PrimitiveType.Lines);
+
+            // Eje X (Rojo)
+            GL.Color3(1.0f, 0.0f, 0.0f);
+            GL.Vertex3(-3.0f, 0.0f, 0.0f);
+            GL.Vertex3(3.0f, 0.0f, 0.0f);
+
+            // Eje Y (Verde)
+            GL.Color3(0.0f, 1.0f, 0.0f);
+            GL.Vertex3(0.0f, -3.0f, 0.0f);
+            GL.Vertex3(0.0f, 3.0f, 0.0f);
+
+            // Eje Z (Azul)
+            GL.Color3(0.0f, 0.0f, 1.0f);
+            GL.Vertex3(0.0f, 0.0f, -3.0f);
+            GL.Vertex3(0.0f, 0.0f, 3.0f);
+
+
+            GL.End();
+        }
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
@@ -82,286 +240,7 @@ namespace Diseño3D
             }
         }
 
-        public void setCentro(float x, float y, float z)
-        {
-            this.posX = x;
-            this.posY = y;
-            this.posZ = z;
-        }
 
-
-
-
-        private void DrawU()
-        {
-            GL.PushMatrix(); 
-            GL.Rotate(rotationX, 1.0f, 0.0f, 0.0f);  
-            GL.Rotate(rotationY, 0.0f, 1.0f, 0.0f);
-            GL.Translate(posX, posY, posZ);
-
-            GL.Color3(1.0f, 0.3f, 0.3f);  
-            GL.Begin(PrimitiveType.Quads);
-            
-            // Base 
-            //parte delantera
-            GL.Vertex3(-0.4f, -0.5f, 0.25f);    
-            GL.Vertex3(0.4f, -0.5f, 0.25f);     
-            GL.Vertex3(0.4f, -0.4f, 0.25f);     
-            GL.Vertex3(-0.4f, -0.4f, 0.25f);    
-            //parte trasera
-            GL.Vertex3(-0.4f, -0.5f, 0.15f);    
-            GL.Vertex3(0.4f, -0.5f, 0.15f);     
-            GL.Vertex3(0.4f, -0.4f, 0.15f);     
-            GL.Vertex3(-0.4f, -0.4f, 0.15f);    
-            //parte arriba
-            GL.Vertex3(-0.4f, -0.4f, 0.25f);    
-            GL.Vertex3(0.4f, -0.4f, 0.25f);     
-            GL.Vertex3(0.4f, -0.4f, 0.15f);     
-            GL.Vertex3(-0.4f, -0.4f, 0.15f);    
-            //parte abajo
-            GL.Vertex3(-0.4f, -0.5f, 0.25f);    
-            GL.Vertex3(0.4f, -0.5f, 0.25f);     
-            GL.Vertex3(0.4f, -0.5f, 0.15f);     
-            GL.Vertex3(-0.4f, -0.5f, 0.15f);    
-            // Lado derecho
-            GL.Vertex3(0.4f, -0.5f, 0.25f);     
-            GL.Vertex3(0.4f, -0.5f, 0.15f);     
-            GL.Vertex3(0.4f, -0.4f, 0.15f);     
-            GL.Vertex3(0.4f, -0.4f, 0.25f);    
-
-            // Lado izquierdo
-            GL.Vertex3(-0.4f, -0.5f, 0.25f);  
-            GL.Vertex3(-0.4f, -0.5f, 0.15f);  
-            GL.Vertex3(-0.4f, -0.4f, 0.15f);  
-            GL.Vertex3(-0.4f, -0.4f, 0.25f);   
-
-            //columna derecha
-            //parte delantera
-            GL.Vertex3(0.3f, .8f, 0.25f);    
-            GL.Vertex3(0.4f, .8f, 0.25f);     
-            GL.Vertex3(0.4f, -0.4f, 0.25f);     
-            GL.Vertex3(0.3f, -0.4f, 0.25f);    
-            //parte trasera
-            GL.Vertex3(.3f, .8f, 0.15f);    
-            GL.Vertex3(0.4f, .8f, 0.15f);     
-            GL.Vertex3(0.4f, -0.4f, 0.15f);     
-            GL.Vertex3(.3f, -0.4f, 0.15f);    
-            //parte arriba
-            GL.Vertex3(.4f, -0.4f, 0.25f);    
-            GL.Vertex3(0.3f, -0.4f, 0.25f);     
-            GL.Vertex3(0.3f, -0.4f, 0.15f);     
-            GL.Vertex3(.4f, -0.4f, 0.15f);    
-            //parte abajo
-            GL.Vertex3(.4f, .8f, 0.25f);    
-            GL.Vertex3(0.3f, .8f, 0.25f);     
-            GL.Vertex3(0.3f, .8f, 0.15f);     
-            GL.Vertex3(.4f, .8f, 0.15f);    
-            // Lado derecho
-            GL.Vertex3(0.3f, .8f, 0.25f);     
-            GL.Vertex3(0.3f, .8f, 0.15f);     
-            GL.Vertex3(0.3f, -0.4f, 0.15f);     
-            GL.Vertex3(0.3f, -0.4f, 0.25f);   
-
-            // Lado izquierdo
-            GL.Vertex3(.4f, .8f, 0.25f);  
-            GL.Vertex3(.4f, .8f, 0.15f);
-            GL.Vertex3(.4f, -0.4f, 0.15f);   
-            GL.Vertex3(.4f, -0.4f, 0.25f);    
-
-            //columna izquierda
-            //parte delantera
-            GL.Vertex3(-0.4f, .8f, 0.25f);    
-            GL.Vertex3(-0.3f, .8f, 0.25f);     
-            GL.Vertex3(-0.3f, -0.4f, 0.25f);     
-            GL.Vertex3(-0.4f, -0.4f, 0.25f);    
-            //parte trasera
-            GL.Vertex3(-.4f, .8f, 0.15f);    
-            GL.Vertex3(-0.3f, .8f, 0.15f);     
-            GL.Vertex3(-0.3f, -0.4f, 0.15f);     
-            GL.Vertex3(-.4f, -0.4f, 0.15f);    
-            //parte arriba
-            GL.Vertex3(-.4f, -0.4f, 0.25f);    
-            GL.Vertex3(-0.3f, -0.4f, 0.25f);     
-            GL.Vertex3(-0.3f, -0.4f, 0.15f);     
-            GL.Vertex3(-.4f, -0.4f, 0.15f);    
-            //parte abajo
-            GL.Vertex3(-.4f, .8f, 0.25f);    
-            GL.Vertex3(-0.3f, .8f, 0.25f);    
-            GL.Vertex3(-0.3f, .8f, 0.15f);    
-            GL.Vertex3(-.4f, .8f, 0.15f);
-            // Lado izquierdo
-            GL.Vertex3(-.4f, .8f, 0.25f);  
-            GL.Vertex3(-.4f, .8f, 0.15f);  
-            GL.Vertex3(-.4f, -0.4f, 0.15f);  
-            GL.Vertex3(-.4f, -0.4f, 0.25f);  
-            // Lado derecho
-
-            GL.Color3(.1f, 0.2f, 0.2f);
-            GL.Vertex3(-0.3f, .8f, 0.25f);   
-            GL.Vertex3(-0.3f, .8f, 0.15f);   
-            GL.Vertex3(-0.3f, -0.4f, 0.15f);   
-            GL.Vertex3(-0.3f, -0.4f, 0.25f);
-
-
-            /*
-            // Base 
-            // Parte delantera
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, posZ + 0.25f);    
-            GL.Vertex3(0.4f + posX, -0.5f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.25f);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.25f);    
-
-            // Parte trasera
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, posZ + 0.15f);    
-            GL.Vertex3(0.4f + posX, -0.5f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.15f);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.15f);    
-
-            // Parte arriba
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.25f);    
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.15f);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.15f);    
-
-            // Parte abajo
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, posZ + 0.25f);    
-            GL.Vertex3(0.4f + posX, -0.5f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.4f + posX, -0.5f + posY, posZ + 0.15f);     
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, posZ + 0.15f);    
-
-            // Lado derecho
-            GL.Vertex3(0.4f + posX, -0.5f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.4f + posX, -0.5f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.25f);    
-
-            // Lado izquierdo
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, posZ + 0.25f);  
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, posZ + 0.15f);  
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.15f);  
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.25f);   
-
-            // Columna derecha
-            // Parte delantera
-            GL.Vertex3(0.3f + posX, 0.8f + posY, posZ + 0.25f);    
-            GL.Vertex3(0.4f + posX, 0.8f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, posZ + 0.25f);    
-
-            // Parte trasera
-            GL.Vertex3(0.3f + posX, 0.8f + posY, posZ + 0.15f);    
-            GL.Vertex3(0.4f + posX, 0.8f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, posZ + 0.15f);    
-
-            // Parte arriba
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.25f);    
-            GL.Vertex3(0.3f + posX, -0.4f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.15f);    
-
-            // Parte abajo
-            GL.Vertex3(0.4f + posX, 0.8f + posY, posZ + 0.25f);    
-            GL.Vertex3(0.3f + posX, 0.8f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.3f + posX, 0.8f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.4f + posX, 0.8f + posY, posZ + 0.15f);    
-
-            // Lado derecho
-            GL.Vertex3(0.3f + posX, 0.8f + posY, posZ + 0.25f);     
-            GL.Vertex3(0.3f + posX, 0.8f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, posZ + 0.15f);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, posZ + 0.25f);   
-
-            // Lado izquierdo
-            GL.Vertex3(0.4f + posX, 0.8f + posY, posZ + 0.25f);  
-            GL.Vertex3(0.4f + posX, 0.8f + posY, posZ + 0.15f);
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.15f);   
-            GL.Vertex3(0.4f + posX, -0.4f + posY, posZ + 0.25f);    
-
-            // Columna izquierda
-            // Parte delantera
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, posZ + 0.25f);    
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, posZ + 0.25f);     
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, posZ + 0.25f);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.25f);    
-
-            // Parte trasera
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, posZ + 0.15f);    
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, posZ + 0.15f);     
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, posZ + 0.15f);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.15f);    
-
-            // Parte arriba
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.25f);    
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, posZ + 0.25f);     
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, posZ + 0.15f);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.15f);    
-
-            // Parte abajo
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, posZ + 0.25f);    
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, posZ + 0.25f);    
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, posZ + 0.15f);    
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, posZ + 0.15f);
-
-            // Lado izquierdo
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, posZ + 0.25f);  
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, posZ + 0.15f);  
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.15f);  
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, posZ + 0.25f);  
-
-            // Lado derecho
-            GL.Color3(0.1f, 0.2f, 0.2f);
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, posZ + 0.25f);   
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, posZ + 0.15f);   
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, posZ + 0.15f);   
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, posZ + 0.25f);    
-            */
-
-
-
-            GL.End();
-            GL.PopMatrix();
-        }
-
-        private void DrawAxes()
-        {
-            GL.Begin(PrimitiveType.Lines);
-
-            // Eje X (Rojo)
-            GL.Color3(1.0f, 0.0f, 0.0f);
-            GL.Vertex3(-2.0f, 0.0f, 0.0f);
-            GL.Vertex3(2.0f, 0.0f, 0.0f);
-
-            // Eje Y (Verde)
-            GL.Color3(0.0f, 1.0f, 0.0f);
-            GL.Vertex3(0.0f, -2.0f, 0.0f);
-            GL.Vertex3(0.0f, 2.0f, 0.0f);
-
-            // Eje Z (Azul)
-            GL.Color3(0.0f, 0.0f, 1.0f);
-            GL.Vertex3(0.0f, 0.0f, -2.0f);
-            GL.Vertex3(0.0f, 0.0f, 2.0f);
-            // Eje X (Rojo)
-            GL.Color3(1.0f, 0.0f, 0.0f);
-            GL.Vertex3(-2.0f, 0.0f, 0.0f);
-            GL.Vertex3(2.0f, 0.0f, 0.0f);
-
-            // Eje Y (Verde)
-            GL.Color3(0.0f, 1.0f, 0.0f);
-            GL.Vertex3(0.0f, -2.0f, 0.0f);
-            GL.Vertex3(0.0f, 2.0f, 0.0f);
-
-            // Eje Z (Azul)
-            GL.Color3(0.0f, 0.0f, 1.0f);
-            GL.Vertex3(0.0f, 0.0f, -2.0f);
-            GL.Vertex3(0.0f, 0.0f, 2.0f);
-
-            GL.End();
-        }
-
-
-
-        
 
     }
 }

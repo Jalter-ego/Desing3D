@@ -45,6 +45,7 @@ namespace Diseño3D
             this.textX.Name = "textX";
             this.textX.Size = new System.Drawing.Size(55, 25);
             this.textX.TabIndex = 0;
+            this.textX.TextChanged += new System.EventHandler(this.textX_TextChanged);
             // 
             // label1
             // 
