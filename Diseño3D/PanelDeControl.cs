@@ -13,13 +13,14 @@ namespace Diseño3D
     public partial class PanelDeControl : Form
     {
         private Game game;
+        private Objeto selectObjet;
         public PanelDeControl(Game game)
         {
             InitializeComponent();
             this.game = game;
-            textX.Text = game.posX.ToString();
-            textY.Text = game.posY.ToString();
-            textZ.Text = game.posZ.ToString();
+            textX.Text = 0.ToString();
+            textY.Text = 0.ToString();
+            textZ.Text = 0.ToString();
 
         }
 
@@ -29,12 +30,28 @@ namespace Diseño3D
             float y = float.Parse(textY.Text);
             float z = float.Parse(textZ.Text);
 
-            game.setCentro(x, y, z);
+            selectObjet.SetCentro(x, y, z);
         }
 
         private void textX_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void objetUToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.selectObjet = this.game.objet_U;
+            textX.Text = this.selectObjet.cx.ToString();
+            textY.Text = this.selectObjet.cy.ToString();
+            textZ.Text = this.selectObjet.cz.ToString();
+        }
+
+        private void objetU2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.selectObjet = this.game.objet_U2;
+            textX.Text = this.selectObjet.cx.ToString();
+            textY.Text = this.selectObjet.cy.ToString();
+            textZ.Text = this.selectObjet.cz.ToString();
         }
     }
 }

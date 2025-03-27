@@ -3,195 +3,214 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Diseño3D
 {
     public class Game : GameWindow
     {
-        private float rotationX = 0.0f;
-        private float rotationY = 0.0f;
-
         public float posX = 0.0f;
         public float posY = 0.0f;
         public float posZ = 0.0f;
 
-        public Game() : base(800, 600) { }
+        // Posición y orientación de la cámara
+        private Vector3 cameraPosition = new Vector3(1.5f, 2f, 3f);
+        private Vector3 cameraFront = new Vector3(-0.5f, -0.5f, -1f);
+        private Vector3 cameraUp = Vector3.UnitY;
+        private float cameraSpeed = 0.05f;
+
+        public Objeto objet_U;
+        public Objeto objet_U2;
+
+        public Game() : base(800, 600)
+        {
+            this.objet_U = new Objeto(this.getVerticesU(), new Vector3(0, 0, 0));
+            this.objet_U2 = new Objeto(this.getVerticesU(), new Vector3(0.5f, 0, -1));
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            GL.ClearColor(new Color4(51f / 255f, 51f / 255f, 51f / 255f, 1.0f));  // Fondo gris oscuro
-            
+            GL.ClearColor(new Color4(51f / 255f, 51f / 255f, 51f / 255f, 1.0f));
+            // Normalizar el vector de dirección de la cámara
+            cameraFront.Normalize();
         }
 
-        // Método para renderizar la escena
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
 
             GL.Enable(EnableCap.DepthTest);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);  // Limpiar la pantalla
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
 
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
-                MathHelper.DegreesToRadians(45.0f), // Campo de visión de 45 grados
-                Width / (float)Height, // Relación de aspecto
-                0.1f, // Distancia del plano cercano
-                100.0f); // Distancia del plano lejano
-            GL.LoadMatrix(ref projection); // Cargar la matriz de proyección
-
+                MathHelper.DegreesToRadians(45.0f),
+                Width / (float)Height,
+                0.1f,
+                100.0f);
+            GL.LoadMatrix(ref projection);
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
 
-            // camara
+            // Usar las variables de la cámara para la vista
             Matrix4 modelview = Matrix4.LookAt(
-                new Vector3(1.5f, 2f, 3f), // Posición de la cámara
-                new Vector3(0.0f, 0.1f, 0.0f), // Punto de mira
-                Vector3.UnitY); // Vector "arriba"
+                cameraPosition,
+                cameraPosition + cameraFront,
+                cameraUp);
             GL.LoadMatrix(ref modelview);
 
-
+            this.objet_U.Draw();
+            this.objet_U2.Draw();
             DrawAxes();
-            DrawU();
-
             SwapBuffers();
         }
 
-        public void setCentro(float x, float y, float z)
+        protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            this.posX = x;
-            this.posY = y;
-            this.posZ = z;
+            base.OnUpdateFrame(e);
+            var keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Key.W))  // Mover hacia adelante
+            {
+                cameraPosition += cameraFront * cameraSpeed;
+            }
+            if (keyboardState.IsKeyDown(Key.S))  // Mover hacia atrás
+            {
+                cameraPosition -= cameraFront * cameraSpeed;
+            }
+            if (keyboardState.IsKeyDown(Key.A))  // Mover a la izquierda
+            {
+                cameraPosition -= Vector3.Normalize(Vector3.Cross(cameraFront, cameraUp)) * cameraSpeed;
+            }
+            if (keyboardState.IsKeyDown(Key.D))  // Mover a la derecha
+            {
+                cameraPosition += Vector3.Normalize(Vector3.Cross(cameraFront, cameraUp)) * cameraSpeed;
+            }
+
         }
 
-        private void DrawU()
-        {
-            GL.PushMatrix(); 
-            GL.Rotate(rotationX, 1.0f, 0.0f, 0.0f);  
-            GL.Rotate(rotationY, 0.0f, 1.0f, 0.0f);
 
-            GL.Color3(1.0f, 0.3f, 0.3f);  
-            GL.Begin(PrimitiveType.Quads);
-            
+
+        private List<Vector3> getVerticesU()
+        {
+            List<Vector3> array = new List<Vector3>();
             // Base 
             // Parte delantera
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.25f + posZ);    
-            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
 
             // Parte trasera
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.15f + posZ);    
-            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
 
             // Parte arriba
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);    
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
 
             // Parte abajo
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.25f + posZ);    
-            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.15f + posZ);     
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.15f + posZ);    
+            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.15f + posZ));
 
             // Lado derecho
-            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.5f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
 
             // Lado izquierdo
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.25f + posZ);  
-            GL.Vertex3(-0.4f + posX, -0.5f + posY, 0.15f + posZ);  
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);  
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);   
+            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
 
             // Columna derecha
             // Parte delantera
-            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.25f + posZ);    
-            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.25f + posZ);    
+            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.25f + posZ));
 
             // Parte trasera
-            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.15f + posZ);    
-            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.15f + posZ);    
+            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.15f + posZ));
 
             // Parte arriba
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);    
-            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
 
             // Parte abajo
-            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.25f + posZ);    
-            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.15f + posZ);    
+            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.15f + posZ));
 
             // Lado derecho
-            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.25f + posZ);     
-            GL.Vertex3(0.3f + posX, 0.8f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.15f + posZ);     
-            GL.Vertex3(0.3f + posX, -0.4f + posY, 0.25f + posZ);   
+            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.25f + posZ));
 
             // Lado izquierdo
-            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.25f + posZ);  
-            GL.Vertex3(0.4f + posX, 0.8f + posY, 0.15f + posZ);
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.15f + posZ);   
-            GL.Vertex3(0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
 
             // Columna izquierda
             // Parte delantera
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.25f + posZ);    
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.25f + posZ);     
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.25f + posZ);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);    
+            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
 
             // Parte trasera
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.15f + posZ);    
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.15f + posZ);     
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.15f + posZ);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
 
             // Parte arriba
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);    
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.25f + posZ);     
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.15f + posZ);     
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);    
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
 
             // Parte abajo
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.25f + posZ);    
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.25f + posZ);    
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.15f + posZ);    
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.15f + posZ);
+            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.15f + posZ));
 
             // Lado izquierdo
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.25f + posZ);  
-            GL.Vertex3(-0.4f + posX, 0.8f + posY, 0.15f + posZ);  
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.15f + posZ);  
-            GL.Vertex3(-0.4f + posX, -0.4f + posY, 0.25f + posZ);  
+            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
 
             // Lado derecho
-            GL.Color3(0.1f, 0.2f, 0.2f);
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.25f + posZ);   
-            GL.Vertex3(-0.3f + posX, 0.8f + posY, 0.15f + posZ);   
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.15f + posZ);   
-            GL.Vertex3(-0.3f + posX, -0.4f + posY, 0.25f + posZ);    
-            
+            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.25f + posZ));
+            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.15f + posZ));
+            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.25f + posZ));
 
 
-
-            GL.End();
-            GL.PopMatrix();
+            return array;
         }
 
         private void DrawAxes()
@@ -217,28 +236,7 @@ namespace Diseño3D
             GL.End();
         }
 
-        protected override void OnUpdateFrame(FrameEventArgs e)
-        {
-            base.OnUpdateFrame(e);
-            var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Key.W))  // Rotar hacia arriba
-            {
-                rotationX -= 1.0f;
-            }
-            if (keyboardState.IsKeyDown(Key.S))  // Rotar hacia abajo
-            {
-                rotationX += 1.0f;
-            }
-            if (keyboardState.IsKeyDown(Key.A))  // Rotar hacia la izquierda
-            {
-                rotationY -= 1.0f;
-            }
-            if (keyboardState.IsKeyDown(Key.D))  // Rotar hacia la derecha
-            {
-                rotationY += 1.0f;
-            }
-        }
 
 
 

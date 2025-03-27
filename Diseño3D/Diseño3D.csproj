@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="Objeto.cs" />
     <Compile Include="PanelDeControl.cs">
       <SubType>Form</SubType>
     </Compile>
