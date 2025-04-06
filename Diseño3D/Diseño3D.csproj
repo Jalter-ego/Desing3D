@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Escenario.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Objeto.cs" />
     <Compile Include="PanelDeControl.cs">
@@ -56,8 +57,11 @@
     <Compile Include="PanelDeControl.Designer.cs">
       <DependentUpon>PanelDeControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Parte.cs" />
+    <Compile Include="Poligono.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

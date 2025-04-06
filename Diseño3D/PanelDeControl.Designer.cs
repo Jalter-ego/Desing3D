@@ -41,6 +41,7 @@ namespace Diseño3D
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objetUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objetU2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button2 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -133,6 +134,7 @@ namespace Diseño3D
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(137, 24);
             this.menuToolStripMenuItem.Text = "Menu de Objetos";
+            this.menuToolStripMenuItem.Click += new System.EventHandler(this.menuToolStripMenuItem_Click);
             // 
             // objetUToolStripMenuItem
             // 
@@ -148,12 +150,23 @@ namespace Diseño3D
             this.objetU2ToolStripMenuItem.Text = "objet_U2";
             this.objetU2ToolStripMenuItem.Click += new System.EventHandler(this.objetU2ToolStripMenuItem_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(156, 109);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // PanelDeControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(382, 183);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textZ);
@@ -186,5 +199,6 @@ namespace Diseño3D
         private System.Windows.Forms.ToolStripMenuItem menuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem objetUToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem objetU2ToolStripMenuItem;
+        private System.Windows.Forms.Button button2;
     }
 }

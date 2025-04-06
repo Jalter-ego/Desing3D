@@ -19,13 +19,11 @@ namespace Diseño3D
         private Vector3 cameraUp = Vector3.UnitY;
         private float cameraSpeed = 0.05f;
 
-        public Objeto objet_U;
-        public Objeto objet_U2;
+        public Escenario U;
 
         public Game() : base(800, 600)
         {
-            this.objet_U = new Objeto(this.getVerticesU(), new Vector3(0, 0, 0));
-            this.objet_U2 = new Objeto(this.getVerticesU(), new Vector3(0.5f, 0, -1));
+            U = new Escenario(this.getObjetosU(), new Vector(0, 0, 0));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -56,15 +54,14 @@ namespace Diseño3D
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
 
-            // Usar las variables de la cámara para la vista
             Matrix4 modelview = Matrix4.LookAt(
                 cameraPosition,
                 cameraPosition + cameraFront,
                 cameraUp);
             GL.LoadMatrix(ref modelview);
+            U.Draw();
 
-            this.objet_U.Draw();
-            this.objet_U2.Draw();
+
             DrawAxes();
             SwapBuffers();
         }
@@ -90,127 +87,186 @@ namespace Diseño3D
             {
                 cameraPosition += Vector3.Normalize(Vector3.Cross(cameraFront, cameraUp)) * cameraSpeed;
             }
+            if (keyboardState.IsKeyDown(Key.C))
+            {
+                //this.U.GetObjeto("ObjU").GetParte("base").Trasladar(new Vector3(.005f, 0, 0));
+                
+                this.U.GetObjeto("ObjU").SetCentro(this.U.GetObjeto("ObjU").CalcularCentroMasa());
+                this.U.GetObjeto("ObjU").Rotar(5.0f,new Vector3(1,1,0));
+
+            }
 
         }
 
 
 
-        private List<Vector3> getVerticesU()
+        private Dictionary<String,Objeto> getObjetosU()
         {
-            List<Vector3> array = new List<Vector3>();
+            Dictionary<String,Objeto> objetos = new Dictionary<string, Objeto>();
+            Color4 colorBase = new Color4(1.0f, 0.3f, 0.3f, 1f);
+           
             // Base 
             // Parte delantera
-            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono baseUPo1 = new Poligono(colorBase);
+            baseUPo1.Add(new Vector(-0.4f, -0.5f, 0.25f));
+            baseUPo1.Add(new Vector(0.4f, -0.5f, 0.25f));
+            baseUPo1.Add(new Vector(0.4f, -0.4f, 0.25f));
+            baseUPo1.Add(new Vector(-0.4f, -0.4f, 0.25f));
 
             // Parte trasera
-            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            Poligono baseUPo2 = new Poligono(colorBase);
+            baseUPo2.Add(new Vector(-0.4f, -0.5f, 0.15f));
+            baseUPo2.Add(new Vector(0.4f, -0.5f, 0.15f));
+            baseUPo2.Add(new Vector(0.4f, -0.4f, 0.15f));
+            baseUPo2.Add(new Vector(-0.4f, -0.4f, 0.15f));
 
             // Parte arriba
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            Poligono baseUPo3 = new Poligono(colorBase);
+            baseUPo3.Add(new Vector(-0.4f, -0.4f, 0.25f));
+            baseUPo3.Add(new Vector(0.4f, -0.4f, 0.25f));
+            baseUPo3.Add(new Vector(0.4f, -0.4f, 0.15f));
+            baseUPo3.Add(new Vector(-0.4f, -0.4f, 0.15f));
 
             // Parte abajo
-            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.15f + posZ));
+            Poligono baseUPo4 = new Poligono(colorBase);
+            baseUPo4.Add(new Vector(-0.4f, -0.5f, 0.25f));
+            baseUPo4.Add(new Vector(0.4f, -0.5f, 0.25f));
+            baseUPo4.Add(new Vector(0.4f, -0.5f, 0.15f));
+            baseUPo4.Add(new Vector(-0.4f, -0.5f, 0.15f));
 
             // Lado derecho
-            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.5f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono baseUPo5 = new Poligono(colorBase);
+            baseUPo5.Add(new Vector(0.4f, -0.5f, 0.25f));
+            baseUPo5.Add(new Vector(0.4f, -0.5f, 0.15f));
+            baseUPo5.Add(new Vector(0.4f, -0.4f, 0.15f));
+            baseUPo5.Add(new Vector(0.4f, -0.4f, 0.25f));
 
             // Lado izquierdo
-            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.5f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono baseUPo6 = new Poligono(colorBase);
+            baseUPo6.Add(new Vector(-0.4f, -0.5f, 0.25f));
+            baseUPo6.Add(new Vector(-0.4f, -0.5f, 0.15f));
+            baseUPo6.Add(new Vector(-0.4f, -0.4f, 0.15f));
+            baseUPo6.Add(new Vector(-0.4f, -0.4f, 0.25f));
 
-            // Columna derecha
+            Parte baseUPa1 = new Parte();
+            baseUPa1.Add("b1",baseUPo1);
+            baseUPa1.Add("b2",baseUPo2);
+            baseUPa1.Add("b3",baseUPo3);
+            baseUPa1.Add("b4",baseUPo4);
+            baseUPa1.Add("b5",baseUPo5);
+            baseUPa1.Add("b6",baseUPo6);
+
+            // ----- COLUMNA DERECHA -----
+            Parte columnaDerecha = new Parte();
+
             // Parte delantera
-            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono colDer1 = new Poligono(colorBase);
+            colDer1.Add(new Vector(0.3f, 0.8f, 0.25f));
+            colDer1.Add(new Vector(0.4f, 0.8f, 0.25f));
+            colDer1.Add(new Vector(0.4f, -0.4f, 0.25f));
+            colDer1.Add(new Vector(0.3f, -0.4f, 0.25f));
+            columnaDerecha.Add("cd1",colDer1);
 
             // Parte trasera
-            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.15f + posZ));
+            Poligono colDer2 = new Poligono(colorBase);
+            colDer2.Add(new Vector(0.3f, 0.8f, 0.15f));
+            colDer2.Add(new Vector(0.4f, 0.8f, 0.15f));
+            colDer2.Add(new Vector(0.4f, -0.4f, 0.15f));
+            colDer2.Add(new Vector(0.3f, -0.4f, 0.15f));
+            columnaDerecha.Add("cd2",colDer2);
 
             // Parte arriba
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            Poligono colDer3 = new Poligono(colorBase);
+            colDer3.Add(new Vector(0.4f, -0.4f, 0.25f));
+            colDer3.Add(new Vector(0.3f, -0.4f, 0.25f));
+            colDer3.Add(new Vector(0.3f, -0.4f, 0.15f));
+            colDer3.Add(new Vector(0.4f, -0.4f, 0.15f));
+            columnaDerecha.Add("cd3",colDer3);
 
             // Parte abajo
-            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.15f + posZ));
+            Poligono colDer4 = new Poligono(colorBase);
+            colDer4.Add(new Vector(0.4f, 0.8f, 0.25f));
+            colDer4.Add(new Vector(0.3f, 0.8f, 0.25f));
+            colDer4.Add(new Vector(0.3f, 0.8f, 0.15f));
+            colDer4.Add(new Vector(0.4f, 0.8f, 0.15f));
+            columnaDerecha.Add("cd4",colDer4);
 
             // Lado derecho
-            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.3f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.3f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono colDer5 = new Poligono(colorBase);
+            colDer5.Add(new Vector(0.3f, 0.8f, 0.25f));
+            colDer5.Add(new Vector(0.3f, 0.8f, 0.15f));
+            colDer5.Add(new Vector(0.3f, -0.4f, 0.15f));
+            colDer5.Add(new Vector(0.3f, -0.4f, 0.25f));
+            columnaDerecha.Add("dc5",colDer5);
 
             // Lado izquierdo
-            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(0.4f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono colDer6 = new Poligono(colorBase);
+            colDer6.Add(new Vector(0.4f, 0.8f, 0.25f));
+            colDer6.Add(new Vector(0.4f, 0.8f, 0.15f));
+            colDer6.Add(new Vector(0.4f, -0.4f, 0.15f));
+            colDer6.Add(new Vector(0.4f, -0.4f, 0.25f));
+            columnaDerecha.Add("cd6",colDer6);
 
-            // Columna izquierda
+
+            // ----- COLUMNA IZQUIERDA -----
+            Parte columnaIzquierda = new Parte();
+
             // Parte delantera
-            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono colIzq1 = new Poligono(colorBase);
+            colIzq1.Add(new Vector(-0.4f, 0.8f, 0.25f));
+            colIzq1.Add(new Vector(-0.3f, 0.8f, 0.25f));
+            colIzq1.Add(new Vector(-0.3f, -0.4f, 0.25f));
+            colIzq1.Add(new Vector(-0.4f, -0.4f, 0.25f));
+            columnaIzquierda.Add("ci1",colIzq1);
 
             // Parte trasera
-            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            Poligono colIzq2 = new Poligono(colorBase);
+            colIzq2.Add(new Vector(-0.4f, 0.8f, 0.15f));
+            colIzq2.Add(new Vector(-0.3f, 0.8f, 0.15f));
+            colIzq2.Add(new Vector(-0.3f, -0.4f, 0.15f));
+            colIzq2.Add(new Vector(-0.4f, -0.4f, 0.15f));
+            columnaIzquierda.Add("ci2",colIzq2);
 
             // Parte arriba
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
+            Poligono colIzq3 = new Poligono(colorBase);
+            colIzq3.Add(new Vector(-0.4f, -0.4f, 0.25f));
+            colIzq3.Add(new Vector(-0.3f, -0.4f, 0.25f));
+            colIzq3.Add(new Vector(-0.3f, -0.4f, 0.15f));
+            colIzq3.Add(new Vector(-0.4f, -0.4f, 0.15f));
+            columnaIzquierda.Add("ci3",colIzq3);
 
             // Parte abajo
-            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.15f + posZ));
+            Poligono colIzq4 = new Poligono(colorBase);
+            colIzq4.Add(new Vector(-0.4f, 0.8f, 0.25f));
+            colIzq4.Add(new Vector(-0.3f, 0.8f, 0.25f));
+            colIzq4.Add(new Vector(-0.3f, 0.8f, 0.15f));
+            colIzq4.Add(new Vector(-0.4f, 0.8f, 0.15f));
+            columnaIzquierda.Add("ci4",colIzq4);
 
             // Lado izquierdo
-            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.4f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.4f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono colIzq5 = new Poligono(colorBase);
+            colIzq5.Add(new Vector(-0.4f, 0.8f, 0.25f));
+            colIzq5.Add(new Vector(-0.4f, 0.8f, 0.15f));
+            colIzq5.Add(new Vector(-0.4f, -0.4f, 0.15f));
+            colIzq5.Add(new Vector(-0.4f, -0.4f, 0.25f));
+            columnaIzquierda.Add("ci5",colIzq5);
 
             // Lado derecho
-            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.25f + posZ));
-            array.Add(new Vector3(-0.3f + posX, 0.8f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.15f + posZ));
-            array.Add(new Vector3(-0.3f + posX, -0.4f + posY, 0.25f + posZ));
+            Poligono colIzq6 = new Poligono(colorBase);
+            colIzq6.Add(new Vector(-0.3f, 0.8f, 0.25f));
+            colIzq6.Add(new Vector(-0.3f, 0.8f, 0.15f));
+            colIzq6.Add(new Vector(-0.3f, -0.4f, 0.15f));
+            colIzq6.Add(new Vector(-0.3f, -0.4f, 0.25f));
+            columnaIzquierda.Add("ci6",colIzq6);
 
+            Dictionary<String,Parte> partes = new Dictionary<string, Parte>();
+            partes.Add("base",baseUPa1);
+            partes.Add("ColIzq",columnaIzquierda);
+            partes.Add("ColDer",columnaDerecha);
 
-            return array;
+            Objeto objetoU = new Objeto(partes,new Vector(0,0,0));
+            objetos.Add("ObjU",objetoU);
+            return objetos;
         }
 
         private void DrawAxes()

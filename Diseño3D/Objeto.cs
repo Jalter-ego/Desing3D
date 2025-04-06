@@ -8,41 +8,66 @@ namespace Diseño3D
 {
     public class Objeto
     {
-        public float cx = 0;
-        public float cy = 0;
-        public float cz = 0;
-        private List<Vector3> listaDeVertices;
+        public Dictionary<String,Parte> listaDePartes;
+        public Vector centro;
+        public Color4 color;
 
-        public Objeto(List<Vector3> array, Vector3 centro)
+        public Objeto(Dictionary<String,Parte> list, Vector centro)
         {
-            this.listaDeVertices = array;
-            this.cx = centro.X;
-            this.cy = centro.Y;
-            this.cz = centro.Z;
+            this.listaDePartes = list;
+        }
+
+        public void AddParte(String nombre, Parte nuevaParte)
+        {
+            listaDePartes.Add(nombre, nuevaParte);
+        }
+
+        public Vector GetCentro()
+        {
+            return this.centro;
+        }
+
+        public void SetCentro(Vector centro)
+        {
+            this.centro = centro;
+            foreach (Parte parteActual in listaDePartes.Values)
+            {
+                parteActual.SetCentro(centro);
+            }
+        }
+
+        public void SetColor(String parte, String poligono, Color4 color)
+        {
+            this.color = color;
+            listaDePartes[parte].SetColor(poligono, this.color);
+        }
+
+        public Parte GetParte(String nombre)
+        {
+            return this.listaDePartes[nombre];
         }
 
         public void Draw()
         {
-            GL.PushMatrix();
-            GL.Color3(1.0f, 0.3f, 0.3f);
-            GL.Begin(PrimitiveType.Quads);
-
-            foreach (Vector3 vector in this.listaDeVertices)
+            foreach (Parte parte in this.listaDePartes.Values)
             {
-                GL.Vertex3(vector.X + cx, vector.Y + cy, vector.Z +cz);
+                parte.Draw();
             }
-
-            GL.End();
-            GL.PopMatrix();
         }
 
-        public void SetCentro(float x, float y, float z)
+        public Vector CalcularCentroMasa()
         {
-            this.cx = x;
-            this.cy = y;
-            this.cz = z;
+            Vector sumCentro = new Vector(0.0f, 0.0f, 0.0f);
+            foreach (Parte parte in listaDePartes.Values)
+            {
+                sumCentro += parte.CalcularCentroMasa();
+            }
+            sumCentro /= listaDePartes.Count;
+            return sumCentro;
         }
-    }   
+
+
+    }
 
 
 }

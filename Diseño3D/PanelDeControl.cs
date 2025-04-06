@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OpenTK;
 
 namespace Diseño3D
 {
@@ -30,7 +31,7 @@ namespace Diseño3D
             float y = float.Parse(textY.Text);
             float z = float.Parse(textZ.Text);
 
-            selectObjet.SetCentro(x, y, z);
+            //selectObjet.SetCentro(x, y, z);
         }
 
         private void textX_TextChanged(object sender, EventArgs e)
@@ -40,18 +41,29 @@ namespace Diseño3D
 
         private void objetUToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.selectObjet = this.game.objet_U;
+            /*this.selectObjet = this.game.objet_U;
             textX.Text = this.selectObjet.cx.ToString();
             textY.Text = this.selectObjet.cy.ToString();
-            textZ.Text = this.selectObjet.cz.ToString();
+            textZ.Text = this.selectObjet.cz.ToString();*/
         }
 
         private void objetU2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.selectObjet = this.game.objet_U2;
+            /*this.selectObjet = this.game.objet_U2;
             textX.Text = this.selectObjet.cx.ToString();
             textY.Text = this.selectObjet.cy.ToString();
-            textZ.Text = this.selectObjet.cz.ToString();
+            textZ.Text = this.selectObjet.cz.ToString();*/
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        { 
+            this.game.U.GetObjeto("ObjU").GetParte("base").Rotar(5.0f,new Vector3(1,0,0));
+            
+        }
+
+        private void menuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
