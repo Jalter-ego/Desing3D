@@ -31,7 +31,7 @@ namespace Diseño3D
             float y = float.Parse(textY.Text);
             float z = float.Parse(textZ.Text);
 
-            //selectObjet.SetCentro(x, y, z);
+            this.game.escenarioU.GetObjeto("ObjU").SetCentro(new Vector(x, y, z));
         }
 
         private void textX_TextChanged(object sender, EventArgs e)
@@ -41,10 +41,11 @@ namespace Diseño3D
 
         private void objetUToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /*this.selectObjet = this.game.objet_U;
-            textX.Text = this.selectObjet.cx.ToString();
-            textY.Text = this.selectObjet.cy.ToString();
-            textZ.Text = this.selectObjet.cz.ToString();*/
+            this.selectObjet = this.game.escenarioU.GetObjeto("ObjU");
+            Console.WriteLine(this.selectObjet.centro.x);
+            textX.Text = this.selectObjet.centro.x.ToString();
+            textY.Text = this.selectObjet.centro.y.ToString();
+            textZ.Text = this.selectObjet.centro.z.ToString();
         }
 
         private void objetU2ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -57,8 +58,7 @@ namespace Diseño3D
 
         private void button2_Click(object sender, EventArgs e)
         { 
-            this.game.U.GetObjeto("ObjU").GetParte("base").Rotar(5.0f,new Vector3(1,0,0));
-            
+            this.game.escenarioU.GetObjeto("ObjU").GetParte("base").Rotar(5.0f,new Vector3(1,0,0));
         }
 
         private void menuToolStripMenuItem_Click(object sender, EventArgs e)

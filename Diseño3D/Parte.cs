@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using OpenTK;
 using OpenTK.Graphics;
 
 namespace Diseño3D
 {
-    public class Parte
+    public class Parte: ISerializable
     {
         public Dictionary<String,Poligono> listaDePoligonos;
         public Vector centro;
@@ -15,6 +16,7 @@ namespace Diseño3D
         {
             this.listaDePoligonos = new Dictionary<String,Poligono>();
             this.color = new Color4(0, 0, 0, 0);
+            this.centro = new Vector(0, 0, 0);
         }
 
         public void Add(String nombre, Poligono p)
@@ -32,14 +34,15 @@ namespace Diseño3D
             return this.centro;
         }
 
-        public void SetCentro(Vector centro)
+        public void SetCentro(Vector nuevoCentro)
         {
-            this.centro = centro;
+            this.centro = nuevoCentro;
             foreach (Poligono poligono in listaDePoligonos.Values)
             {
-                poligono.SetCentro(centro);
+                poligono.SetCentro(nuevoCentro);
             }
         }
+
         public void SetColor(String nombre, Color4 color)
         {
             this.color = color;
@@ -66,6 +69,35 @@ namespace Diseño3D
             }
         }
 
+        public void Rotar(float angulo, Vector3 eje)
+        {
+            foreach (Poligono poligono in this.listaDePoligonos.Values)
+            {
+                poligono.Rotar(angulo, eje);
+            }
+        }
+
+        public void Trasladar(Vector3 otroCentro)
+        {
+            foreach (Poligono poligono in this.listaDePoligonos.Values)
+            {
+                poligono.Trasladar(otroCentro);
+            }
+            centro = CalcularCentroMasa();
+        }
+
+        public void Escalar(float escalar, Vector3 factor)
+        {
+            foreach (Poligono poligono in this.listaDePoligonos.Values)
+            {
+                poligono.Escalar(escalar, factor);
+            }
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            ((ISerializable)listaDePoligonos).GetObjectData(info, context);
+        }
 
     }
 }

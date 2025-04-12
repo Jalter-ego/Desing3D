@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using OpenTK;
 
 namespace Diseño3D
 {
-    public class Escenario
+    public class Escenario: ISerializable
     {
-        private Vector centro;
-        private Dictionary<String,Objeto> listaDeObjetos;
+        public Vector centro;
+        public Dictionary<String,Objeto> listaDeObjetos;
 
         public Escenario(Dictionary<String,Objeto> list,Vector centro)
         {
@@ -25,19 +26,25 @@ namespace Diseño3D
             return this.listaDeObjetos[nombre];
         }
 
+        public void SetObjeto(Objeto obj)
+        {
+            this.listaDeObjetos["ObjU"] = obj;
+        }
+
         public Vector GetCentro()
         {
             return this.centro;
         }
 
-        public void SetCentro(Vector centro)
+        public void SetCentro(Vector nuevoCentro)
         {
-            this.centro = centro;
+            this.centro = nuevoCentro;
             foreach (Objeto objeto in listaDeObjetos.Values)
             {
-                objeto.SetCentro(centro);
+                objeto.SetCentro(nuevoCentro);
             }
         }
+
 
         public void Draw()
         {
@@ -65,6 +72,35 @@ namespace Diseño3D
                 Vector3 centroOrigen = obj.centro.VectorAVector3();
                 obj.Trasladar(centroOrigen);
             }
+        }
+
+        public void Rotar(float angulo, Vector3 eje)
+        {
+            foreach (Objeto obj in this.listaDeObjetos.Values)
+            {
+                obj.Rotar(angulo, eje);
+            }
+        }
+
+        public void Escalar(float escalar, Vector3 factor)
+        {
+            foreach (Objeto obj in this.listaDeObjetos.Values)
+            {
+                obj.Escalar(escalar, factor);
+            }
+        }
+
+        public void Trasladar(Vector3 otroCentro)
+        {
+            foreach (Objeto obj in this.listaDeObjetos.Values)
+            {
+                obj.Trasladar(otroCentro);
+            }
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            ((ISerializable)listaDeObjetos).GetObjectData(info, context);
         }
 
     }
