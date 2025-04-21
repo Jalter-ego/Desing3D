@@ -12,6 +12,13 @@ namespace Diseño3D
         public List<Vector> listaDeVertices;
         public Color4 color;
         public Vector centro;
+        public Vector3 Traslacion { get; set; } = Vector3.Zero;
+        public Vector Escala { get; set; } = new Vector(1,1,1);
+        public float RotacionY { get; set; } = 0f;
+        public float RotacionX { get; set; } = 0f;
+        public float RotacionZ { get; set; } = 0f;
+
+
 
         public Poligono(Color4 color)
         {
@@ -43,16 +50,59 @@ namespace Diseño3D
 
         public void Draw()
         {
-            //1.0f, 0.3f, 0.3f
+            GL.PushMatrix();
+            //Console.WriteLine($"Centro del polígono: {centro.X}, {centro.Y}, {centro.Z}");
+            // 1. Trasladar al centro
+            //GL.Translate(centro.VectorAVector3());
+
+            // 2. Aplicar transformaciones
+            GL.Translate(Traslacion);
+            GL.Rotate(RotacionX, 1.0f, 0.0f, 0.0f);
+            GL.Rotate(RotacionY, 0.0f, 1.0f, 0.0f);
+            GL.Rotate(RotacionZ, 0.0f, 0.0f, 1.0f);
+            GL.Scale(Escala.VectorAVector3());
+
+
+            // 3. Dibujar en torno al origen
             GL.Color4(color);
             GL.Begin(PrimitiveType.Quads);
 
-            foreach (Vector vector in this.listaDeVertices)
+            foreach (Vector vector in listaDeVertices)
             {
-                GL.Vertex3(vector.x + centro.x, vector.y + centro.y, vector.z + centro.z);
+                GL.Vertex3((vector-centro).VectorAVector3());
             }
 
             GL.End();
+
+            GL.PopMatrix();
+        }
+
+
+
+
+        public void Rotar(float angulo, Vector3 eje)
+        {
+            if (eje.X != 0) RotacionX += angulo;
+            if (eje.Y != 0) RotacionY += angulo;
+            if (eje.Z != 0) RotacionZ += angulo;
+        }
+
+        public void Trasladar(Vector3 delta)
+        {
+            Traslacion += delta;
+        }
+
+        public void Escalar(float escalar, Vector3 factor)
+        {
+            Escala.x *= (factor.X > 0) ? factor.X + escalar : 1;
+            Escala.y *= (factor.Y > 0) ? factor.Y + escalar : 1;
+            Escala.z *= (factor.Z > 0) ? factor.Z + escalar : 1;
+        }
+
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
         }
 
         private Vector MinVertice()
@@ -93,77 +143,7 @@ namespace Diseño3D
             return nuevoCentro;
         }
 
-        public void Rotar(float angulo, Vector3 eje)
-        {
-            if (!eje.Equals(new Vector3(0.0f, 0.0f, 0.0f)))
-            {
-                Matrix4 rotacion = Matrix4.CreateFromAxisAngle(eje, MathHelper.DegreesToRadians(angulo));
-                for (int i = 0; i < listaDeVertices.Count; i++)
-                {
-                    if (centro.VectorAVector3().Equals(new Vector3(0.0f, 0.0f, 0.0f)))
-                    {
-                        Vector3 vector = Vector3.TransformPosition(listaDeVertices[i].VectorAVector3(), rotacion);
-                        listaDeVertices[i] = (Vector)vector;
-                    }
-                    else
-                    {
-                        Vector3 verticeEnOrigen = listaDeVertices[i].VectorAVector3() - centro.VectorAVector3();
-                        Vector3 vector = Vector3.TransformPosition(verticeEnOrigen, rotacion);
-                        listaDeVertices[i] = (Vector)vector + centro;
-                    }
-                }
-            }
-        }
-
-        public void Trasladar(Vector3 otroCentro)
-        {
-            Matrix4 traslacion = Matrix4.CreateTranslation(otroCentro);
-            for (int i = 0; i < listaDeVertices.Count; i++)
-            {
-                Vector3 vector = Vector3.TransformPosition(listaDeVertices[i].VectorAVector3(), traslacion);
-                listaDeVertices[i] = (Vector)vector;
-            }
-            centro = CalcularCentroMasa();
-        }
-
-        public void Escalar(float escalar, Vector3 factor)
-        {
-            if (factor.X > 0)
-                factor.X += escalar;
-            else
-                factor.X = 1;
-            if (factor.Y > 0)
-                factor.Y += escalar;
-            else
-                factor.Y = 1;
-            if (factor.Z > 0)
-                factor.Z += escalar;
-            else
-                factor.Z = 1;
-            Matrix4 escalacion = Matrix4.CreateScale(factor);
-
-            for (int i = 0; i < listaDeVertices.Count; i++)
-            {
-                if (centro.VectorAVector3().Equals(new Vector3(0.0f, 0.0f, 0.0f)))
-                {
-                    Vector3 vector = Vector3.TransformPosition(listaDeVertices[i].VectorAVector3(), escalacion);
-                    listaDeVertices[i] = (Vector)vector;
-                }
-                else
-                {
-                    Vector3 verticeEnOrigen = listaDeVertices[i].VectorAVector3() - centro.VectorAVector3();
-                    Vector3 vector = Vector3.TransformPosition(verticeEnOrigen, escalacion);
-                    listaDeVertices[i] = (Vector)vector + centro;
-                }
-                // Vector3 vector = Vector3.TransformPosition(listaDeVertices[i].VectorAVector3(), escalacion);
-                // listaDeVertices[i] = (Vector)vector;
-            }
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            throw new NotImplementedException();
-        }
+        
 
     }
 }

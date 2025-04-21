@@ -19,6 +19,12 @@ namespace Diseño3D
             return nuevoVector;
         }
 
+        public static Vector operator -(Vector p1, Vector p2)
+        {
+            Vector nuevoVector = new Vector(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);
+            return nuevoVector;
+        }
+
         public static Vector operator *(Vector p1, float escalar)
         {
             Vector nuevoVector = new Vector(p1.x * escalar, p1.y * escalar, p1.z * escalar);

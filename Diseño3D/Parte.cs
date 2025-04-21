@@ -6,7 +6,7 @@ using OpenTK.Graphics;
 
 namespace Diseño3D
 {
-    public class Parte: ISerializable
+    public class Parte: ISerializable,IterableObject
     {
         public Dictionary<String,Poligono> listaDePoligonos;
         public Vector centro;
@@ -33,6 +33,12 @@ namespace Diseño3D
         {
             return this.centro;
         }
+        public void SetColor(String nombre, Color4 color)
+        {
+            this.color = color;
+            listaDePoligonos[nombre].SetColor(this.color);
+        }
+
 
         public void SetCentro(Vector nuevoCentro)
         {
@@ -43,12 +49,13 @@ namespace Diseño3D
             }
         }
 
-        public void SetColor(String nombre, Color4 color)
+        public void Draw()
         {
-            this.color = color;
-            listaDePoligonos[nombre].SetColor(this.color);
+            foreach (Poligono poligono in this.listaDePoligonos.Values)
+            {
+                poligono.Draw();
+            }
         }
-
         public Vector CalcularCentroMasa()
         {
             Vector sumCentro = new Vector(0.0f, 0.0f, 0.0f);
@@ -61,13 +68,6 @@ namespace Diseño3D
         }
 
 
-        public void Draw()
-        {
-            foreach (Poligono poligono in this.listaDePoligonos.Values)
-            {
-                poligono.Draw();
-            }
-        }
 
         public void Rotar(float angulo, Vector3 eje)
         {

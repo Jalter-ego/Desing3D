@@ -9,7 +9,6 @@ namespace Diseño3D
     {
         public Vector centro;
         public Dictionary<String,Objeto> listaDeObjetos;
-
         public Escenario(Dictionary<String,Objeto> list,Vector centro)
         {
             this.listaDeObjetos = list;
@@ -26,9 +25,9 @@ namespace Diseño3D
             return this.listaDeObjetos[nombre];
         }
 
-        public void SetObjeto(Objeto obj)
+        public void SetObjeto(String name,Objeto obj)
         {
-            this.listaDeObjetos["ObjU"] = obj;
+            this.listaDeObjetos[name] = obj;
         }
 
         public Vector GetCentro()
@@ -45,15 +44,6 @@ namespace Diseño3D
             }
         }
 
-
-        public void Draw()
-        {
-            foreach (Objeto objeto in this.listaDeObjetos.Values)
-            {
-                objeto.Draw();
-            }
-        }
-
         public Vector CalcularCentroMasa()
         {
             Vector sumCentro = new Vector(0.0f, 0.0f, 0.0f);
@@ -64,6 +54,15 @@ namespace Diseño3D
             sumCentro /= listaDeObjetos.Count;
             return sumCentro;
         }
+
+        public void Draw()
+        {
+            foreach (Objeto objeto in this.listaDeObjetos.Values)
+            {
+                objeto.Draw();
+            }
+        }
+
 
         public void TrasladarObjetosASuOrigen()
         {

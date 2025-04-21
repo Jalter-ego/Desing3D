@@ -12,8 +12,12 @@ namespace Diseño3D
         public float posX = 0.0f;
         public float posY = 0.0f;
         public float posZ = 0.0f;
+        public bool isRotar = false;
+        public bool isTrasladar = false;
+        public bool isEscalar = false;
+        public bool isObject = true;
+        private IterableObject objeto;
 
-        // Posición y orientación de la cámara
         private Vector3 cameraPosition = new Vector3(1.5f, 2f, 3f);
         private Vector3 cameraFront = new Vector3(-0.5f, -0.5f, -1f);
         private Vector3 cameraUp = Vector3.UnitY;
@@ -23,19 +27,20 @@ namespace Diseño3D
 
         public Game() : base(800, 600)
         {
-            this.escenarioU = new Escenario(this.getObjetosU(), new Vector(0, 0, 0));
-            //U2 = new Escenario(this.getObjetosU(), new Vector(0, 0, 0));
-            //escenarioU = Serializador.DeserializarObjeto<Escenario>( "U.json");
+            this.escenarioU = new Escenario(this.getObjetosU(),new Vector(0, 0, 0));
+            this.escenarioU.GetObjeto("ObjU").SetCentro(new Vector(0, 0, 0));
+            //escenarioU = Serializador.DeserializarObjeto<Escenario>("U.json");
+            Objeto newObj = new Objeto(this.GetPartes(),new Vector(0,0,0));
+            newObj.SetCentro(new Vector(1, 0, 0));
+            escenarioU.AddObjeto("ObjU2", newObj);
+            Console.WriteLine(newObj.GetParte("base").GetCentro().y);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             GL.ClearColor(new Color4(51f / 255f, 51f / 255f, 51f / 255f, 1.0f));
-            Objeto newU = new Objeto(this.GetPartes(),new Vector(0,0,0));
-            newU.SetCentro(new Vector(1, 0, 0));
-            escenarioU.AddObjeto("ObjU2", newU);
-            //this.escenarioU.SetCentro(this.escenarioU.CalcularCentroMasa());
+            
             // Normalizar el vector de dirección de la cámara
             cameraFront.Normalize();
         }
@@ -67,7 +72,6 @@ namespace Diseño3D
             GL.LoadMatrix(ref modelview);
             escenarioU.Draw();
 
-
             DrawAxes();
             SwapBuffers();
         }
@@ -76,6 +80,37 @@ namespace Diseño3D
         {
             base.OnUpdateFrame(e);
             var keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Key.Number1))
+            {
+                isRotar = true;
+                isTrasladar = false;
+                isEscalar = false;
+            }
+            if (keyboardState.IsKeyDown(Key.Number2))
+            {
+                isRotar = false;
+                isTrasladar = true;
+                isEscalar = false;
+            }
+            if (keyboardState.IsKeyDown(Key.Number3))
+            {
+                isRotar = false;
+                isTrasladar = false;
+                isEscalar = true;
+            }
+
+            if (keyboardState.IsKeyDown(Key.Number0))
+            {
+                if (isObject)
+                {
+                    objeto = this.escenarioU.GetObjeto("ObjU");
+                }
+                else
+                {
+                    objeto = this.escenarioU.GetObjeto("ObjU2");
+                }
+                isObject = !isObject;
+            }
 
             if (keyboardState.IsKeyDown(Key.W))  // Mover hacia adelante
             {
@@ -95,13 +130,72 @@ namespace Diseño3D
             }
             if (keyboardState.IsKeyDown(Key.C))
             {
-                //this.U.GetObjeto("ObjU").GetParte("base").Trasladar(new Vector3(.005f, 0, 0));
-                
-                this.escenarioU.GetObjeto("ObjU").SetCentro(this.escenarioU.GetObjeto("ObjU").CalcularCentroMasa());
-                this.escenarioU.GetObjeto("ObjU").Rotar(5,new  Vector3(1f,0,0));
+                Parte parte = this.escenarioU.GetObjeto("ObjU").GetParte("base");
+                Vector centroMasa = parte.CalcularCentroMasa();
+                Vector delta = centroMasa - parte.GetCentro();
+                parte.Trasladar(new Vector3(delta.x, delta.y, delta.z));
+                parte.SetCentro(centroMasa);
+                parte.Trasladar(new Vector3(0, .005f, 0));
+                parte.Rotar(5,new Vector3(0,1,0));
 
             }
-            if (keyboardState.IsKeyDown(Key.S))
+            if (isRotar)
+            {
+                if (keyboardState.IsKeyDown(Key.X))
+                {
+                    this.AplicarTransformacionConCentroMasa(new Vector3(1, 0, 0));
+
+                }
+                if (keyboardState.IsKeyDown(Key.Y))
+                {
+                    this.AplicarTransformacionConCentroMasa(new Vector3(0, 1, 0));
+
+                }
+                if (keyboardState.IsKeyDown(Key.Z))
+                {
+                    this.AplicarTransformacionConCentroMasa(new Vector3(0, 0, 1));
+
+                }
+            }
+            if (isTrasladar)
+            {
+                if (keyboardState.IsKeyDown(Key.X))
+                {
+                    this.objeto.Trasladar(new Vector3(-.005f,0,0));
+
+                }
+                if (keyboardState.IsKeyDown(Key.Y))
+                {
+                    this.objeto.Trasladar(new Vector3(0, .005f, 0));
+
+                }
+                if (keyboardState.IsKeyDown(Key.Z))
+                {
+                    this.objeto.Trasladar(new Vector3(0, 0, .005f));
+
+                }
+            }
+
+            if (isEscalar)
+            {
+                if (keyboardState.IsKeyDown(Key.X))
+                {
+                    this.objeto.Escalar(.005f,new Vector3(1,0,0));
+
+                }
+                if (keyboardState.IsKeyDown(Key.Y))
+                {
+                    this.objeto.Escalar(.005f, new Vector3(0, 1, 0));
+
+                }
+                if (keyboardState.IsKeyDown(Key.Z))
+                {
+                    this.objeto.Escalar(.005f, new Vector3(0, 0, 1));
+
+                }
+            }
+
+            if (keyboardState.IsKeyDown(Key.P))
             {
                 Console.WriteLine(escenarioU.listaDeObjetos.Values.ToString());
                 Serializador.SerializarObjeto(escenarioU, "U.json");
@@ -109,6 +203,14 @@ namespace Diseño3D
 
         }
 
+        private void AplicarTransformacionConCentroMasa(Vector3 v)
+        {
+            Vector centroMasa = this.objeto.CalcularCentroMasa();
+            Vector delta = centroMasa - this.objeto.GetCentro();
+            this.objeto.Trasladar(new Vector3(delta.x, delta.y, delta.z));
+            this.objeto.SetCentro(centroMasa);
+            this.objeto.Rotar(5, v);
+        }
 
 
         private Dictionary<String,Objeto> getObjetosU()

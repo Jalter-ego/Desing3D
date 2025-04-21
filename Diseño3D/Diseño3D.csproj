@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Escenario.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="IterableObject.cs" />
     <Compile Include="Objeto.cs" />
     <Compile Include="PanelDeControl.cs">
       <SubType>Form</SubType>

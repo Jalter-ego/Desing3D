@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Diseño3D
 {
-    public class Objeto: ISerializable
+    public class Objeto: ISerializable, IterableObject
     {
         public Dictionary<String,Parte> listaDePartes;
         public Vector centro;
@@ -28,14 +28,6 @@ namespace Diseño3D
             return this.centro;
         }
 
-        public void SetCentro(Vector nuevoCentro)
-        {
-            this.centro = nuevoCentro;
-            foreach (Parte parteActual in listaDePartes.Values)
-            {
-                parteActual.SetCentro(nuevoCentro);
-            }
-        }
 
 
         public void SetColor(String parte, String poligono, Color4 color)
@@ -56,6 +48,16 @@ namespace Diseño3D
                 parte.Draw();
             }
         }
+        public void SetCentro(Vector nuevoCentro)
+        {
+            this.centro = nuevoCentro;
+            foreach (Parte parteActual in listaDePartes.Values)
+            {
+                parteActual.SetCentro(nuevoCentro);
+            }
+        }
+
+
 
         public Vector CalcularCentroMasa()
         {
@@ -64,6 +66,7 @@ namespace Diseño3D
             {
                 sumCentro += parte.CalcularCentroMasa();
             }
+            if (listaDePartes.Count == 0) return this.centro; // Evita calcular basura
             sumCentro /= listaDePartes.Count;
             return sumCentro;
         }
