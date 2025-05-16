@@ -12,10 +12,12 @@ namespace Diseño3D
         public Vector centro;
         public Color4 color;
 
+
         public Objeto(Dictionary<String,Parte> list, Vector centro)
         {
             this.listaDePartes = list;
             this.centro = centro;
+            this.color = new Color4(1.0f, 0.3f, 0.3f, 1f);
         }
 
         public void AddParte(String nombre, Parte nuevaParte)
@@ -30,10 +32,13 @@ namespace Diseño3D
 
 
 
-        public void SetColor(String parte, String poligono, Color4 color)
+        public void SetColor(Color4 color)
         {
             this.color = color;
-            listaDePartes[parte].SetColor(poligono, this.color);
+            foreach (Parte parteActual in listaDePartes.Values)
+            {
+                parteActual.SetColor(color);
+            }
         }
 
         public Parte GetParte(String nombre)
@@ -48,6 +53,14 @@ namespace Diseño3D
                 parte.Draw();
             }
         }
+
+        public void Draw3()
+        {
+            foreach (Parte parte in this.listaDePartes.Values)
+            {
+                parte.Draw3();
+            }
+        }
         public void SetCentro(Vector nuevoCentro)
         {
             this.centro = nuevoCentro;
@@ -57,8 +70,6 @@ namespace Diseño3D
             }
         }
 
-
-
         public Vector CalcularCentroMasa()
         {
             Vector sumCentro = new Vector(0.0f, 0.0f, 0.0f);
@@ -66,7 +77,7 @@ namespace Diseño3D
             {
                 sumCentro += parte.CalcularCentroMasa();
             }
-            if (listaDePartes.Count == 0) return this.centro; // Evita calcular basura
+            if (listaDePartes.Count == 0) return this.centro;
             sumCentro /= listaDePartes.Count;
             return sumCentro;
         }
@@ -79,12 +90,21 @@ namespace Diseño3D
             }
         }
 
-        public void Trasladar(Vector3 otroCentro)
+        public void Rotar(float angulo, Vector3 eje, Vector puntoFijo)
+        {
+            foreach (Parte pol in listaDePartes.Values)
+            {
+                pol.Rotar(angulo, eje, puntoFijo);
+            }
+        }
+
+        public void Trasladar(Vector3 delta)
         {
             foreach (Parte parte in this.listaDePartes.Values)
             {
-                parte.Trasladar(otroCentro);
+                parte.Trasladar(delta);
             }
+            this.centro += new Vector(delta.X, delta.Y, delta.Z);
         }
 
         public void Escalar(float escalar, Vector3 factor)

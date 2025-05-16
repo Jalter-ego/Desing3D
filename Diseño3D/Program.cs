@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,15 @@ namespace Diseño3D
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
+            
+            /*Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());*/
             using (var game = new Game())
             {
-                //PanelDeControl panel = new PanelDeControl(game);
-                //panel.Show();
                 game.Run(60.0);  
             }
         }

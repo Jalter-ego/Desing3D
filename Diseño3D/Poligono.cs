@@ -7,16 +7,16 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Diseño3D
 {
-    public class Poligono: ISerializable
+    public class Poligono: ISerializable,IterableObject
     {
         public List<Vector> listaDeVertices;
         public Color4 color;
         public Vector centro;
-        public Vector3 Traslacion { get; set; } = Vector3.Zero;
-        public Vector Escala { get; set; } = new Vector(1,1,1);
-        public float RotacionY { get; set; } = 0f;
-        public float RotacionX { get; set; } = 0f;
-        public float RotacionZ { get; set; } = 0f;
+        private Vector3 Traslacion { get; set; } = Vector3.Zero;
+        private Vector Escala { get; set; } = new Vector(1,1,1);
+        private float RotacionY { get; set; } = 0f;
+        private float RotacionX { get; set; } = 0f;
+        private float RotacionZ { get; set; } = 0f;
 
 
 
@@ -51,11 +51,6 @@ namespace Diseño3D
         public void Draw()
         {
             GL.PushMatrix();
-            //Console.WriteLine($"Centro del polígono: {centro.X}, {centro.Y}, {centro.Z}");
-            // 1. Trasladar al centro
-            //GL.Translate(centro.VectorAVector3());
-
-            // 2. Aplicar transformaciones
             GL.Translate(Traslacion);
             GL.Rotate(RotacionX, 1.0f, 0.0f, 0.0f);
             GL.Rotate(RotacionY, 0.0f, 1.0f, 0.0f);
@@ -69,15 +64,34 @@ namespace Diseño3D
 
             foreach (Vector vector in listaDeVertices)
             {
-                GL.Vertex3((vector-centro).VectorAVector3());
+                GL.Vertex3((vector+centro).VectorAVector3());
             }
-
             GL.End();
-
             GL.PopMatrix();
         }
 
+        public void Draw3()
+        {
+            GL.PushMatrix();
+            GL.PushAttrib(AttribMask.TextureBit | AttribMask.EnableBit | AttribMask.LightingBit); // Guarda estados relacionados
+            //GL.Enable(EnableCap.Lighting); // Habilita la iluminación
+            GL.Enable(EnableCap.Light0);   // Habilita la luz 0
+            GL.Light(LightName.Light0, LightParameter.Position, new float[] { 5.0f, 5.0f, 5.0f, 0.0f }); // Luz direccional
+            GL.Light(LightName.Light0, LightParameter.Ambient, new float[] { 0.2f, 0.2f, 0.2f, 1.0f });
+            GL.Light(LightName.Light0, LightParameter.Diffuse, new float[] { 0.8f, 0.8f, 0.8f, 1.0f });
+            GL.Light(LightName.Light0, LightParameter.Specular, new float[] { 0.5f, 0.5f, 0.5f, 1.0f });
 
+
+            GL.Color4(color);
+            GL.Begin(PrimitiveType.Triangles);
+            foreach (Vector vector in listaDeVertices)
+            {
+                // Asegúrate que aquí ya no sumas '+ centro' si seguiste la recomendación anterior
+                GL.Vertex3(vector.VectorAVector3());
+            }
+            GL.End();
+            GL.PopMatrix();
+        }
 
 
         public void Rotar(float angulo, Vector3 eje)
@@ -89,8 +103,38 @@ namespace Diseño3D
 
         public void Trasladar(Vector3 delta)
         {
-            Traslacion += delta;
+            for (int i = 0; i < listaDeVertices.Count; i++)
+            {
+                listaDeVertices[i].x += delta.X;
+                listaDeVertices[i].y += delta.Y;
+                listaDeVertices[i].z += delta.Z;
+            }
+            // El centro del polígono también se mueve
+            this.centro.x += delta.X;
+            this.centro.y += delta.Y;
+            this.centro.z += delta.Z;
+            // Opcionalmente, recalcula el centro exacto si es necesario
+            // this.centro = this.CalcularCentroMasa();
         }
+
+        public void Rotar(float angulo, Vector3 eje, Vector puntoFijo)
+        {
+            Matrix4 trans1 = Matrix4.CreateTranslation(-puntoFijo.x, -puntoFijo.y, -puntoFijo.z);
+            Matrix4 rot = Matrix4.CreateFromAxisAngle(eje, MathHelper.DegreesToRadians(angulo));
+            Matrix4 trans2 = Matrix4.CreateTranslation(puntoFijo.x, puntoFijo.y, puntoFijo.z);
+
+            Matrix4 transformacion = trans1 * rot * trans2;
+
+            for (int i = 0; i < listaDeVertices.Count; i++)
+            {
+                Vector3 v = listaDeVertices[i].VectorAVector3();
+                Vector4 v4 = new Vector4(v, 1.0f);
+                Vector4 resultado = Vector4.Transform(v4, transformacion);
+
+                listaDeVertices[i] = new Vector(resultado.X, resultado.Y, resultado.Z);
+            }
+        }
+
 
         public void Escalar(float escalar, Vector3 factor)
         {
@@ -143,7 +187,9 @@ namespace Diseño3D
             return nuevoCentro;
         }
 
-        
-
+        Vector IterableObject.GetCentro()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace Diseño3D
 {
-    public class Escenario: ISerializable
+    public class Escenario: ISerializable,IterableObject
     {
         public Vector centro;
+        public Color4 color;
         public Dictionary<String,Objeto> listaDeObjetos;
         public Escenario(Dictionary<String,Objeto> list,Vector centro)
         {
             this.listaDeObjetos = list;
             this.centro = centro;
+            this.color = new Color4(1.0f, 0.3f, 0.3f, 1f);
         }
         public void AddObjeto(String nombre, Objeto nuevoObjeto)
         {
@@ -44,6 +47,15 @@ namespace Diseño3D
             }
         }
 
+        public void SetColor(Color4 color)
+        {
+            this.color = color;
+            foreach (Objeto objeto in listaDeObjetos.Values)
+            {
+                objeto.SetColor(color);
+            }
+        }
+
         public Vector CalcularCentroMasa()
         {
             Vector sumCentro = new Vector(0.0f, 0.0f, 0.0f);
@@ -63,21 +75,19 @@ namespace Diseño3D
             }
         }
 
-
-        public void TrasladarObjetosASuOrigen()
-        {
-            foreach (Objeto obj in this.listaDeObjetos.Values)
-            {
-                Vector3 centroOrigen = obj.centro.VectorAVector3();
-                obj.Trasladar(centroOrigen);
-            }
-        }
-
         public void Rotar(float angulo, Vector3 eje)
         {
             foreach (Objeto obj in this.listaDeObjetos.Values)
             {
                 obj.Rotar(angulo, eje);
+            }
+        }
+
+        public void Rotar(float angulo, Vector3 eje, Vector puntoFijo)
+        {
+            foreach (Objeto obj in listaDeObjetos.Values)
+            {
+                obj.Rotar(angulo, eje, puntoFijo);
             }
         }
 

@@ -9,7 +9,10 @@ C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.csproj.CoreCo
 C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.csproj.CopyComplete
 C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.exe
 C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.pdb
-C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.PanelDeControl.resources
 C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.csproj.GenerateResource.cache
 C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\Newtonsoft.Json.dll
 C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\OpenTK.GLControl.dll
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\OpenTK.GLControl.pdb
+C:\Users\user\source\repos\Diseño3D\Diseño3D\bin\Debug\OpenTK.GLControl.xml
+C:\Users\user\source\repos\Diseño3D\Diseño3D\obj\Debug\Diseño3D.MainForm.resources

@@ -15,7 +15,7 @@ namespace Diseño3D
         public Parte()
         {
             this.listaDePoligonos = new Dictionary<String,Poligono>();
-            this.color = new Color4(0, 0, 0, 0);
+            this.color = new Color4(1.0f, 0.3f, 0.3f, 1f);
             this.centro = new Vector(0, 0, 0);
         }
 
@@ -33,10 +33,13 @@ namespace Diseño3D
         {
             return this.centro;
         }
-        public void SetColor(String nombre, Color4 color)
+        public void SetColor(Color4 color)
         {
             this.color = color;
-            listaDePoligonos[nombre].SetColor(this.color);
+            foreach (Poligono poligono in listaDePoligonos.Values)
+            {
+                poligono.SetColor(color);
+            }
         }
 
 
@@ -54,6 +57,14 @@ namespace Diseño3D
             foreach (Poligono poligono in this.listaDePoligonos.Values)
             {
                 poligono.Draw();
+            }
+        }
+
+        public void Draw3()
+        {
+            foreach (Poligono poligono in this.listaDePoligonos.Values)
+            {
+                poligono.Draw3();
             }
         }
         public Vector CalcularCentroMasa()
@@ -74,6 +85,14 @@ namespace Diseño3D
             foreach (Poligono poligono in this.listaDePoligonos.Values)
             {
                 poligono.Rotar(angulo, eje);
+            }
+        }
+
+        public void Rotar(float angulo, Vector3 eje, Vector puntoFijo)
+        {
+            foreach (Poligono pol in listaDePoligonos.Values)
+            {
+                pol.Rotar(angulo,eje,puntoFijo);
             }
         }
 
