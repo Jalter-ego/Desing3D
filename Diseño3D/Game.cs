@@ -16,34 +16,20 @@ namespace Diseño3D
         public bool isTrasladar = false;
         public bool isObject = true;
 
-        private Vector3 cameraPosition = new Vector3(-3f, 4f, 6f);
-        private Vector3 cameraFront = new Vector3(1f, -0.5f, -1f);
+
+        private Vector3 cameraPosition = new Vector3(4f, 4f, 4f);
+        private Vector3 cameraFront = new Vector3(0f, 0f, 1f);
         private Vector3 cameraUp = Vector3.UnitY;
         private readonly float cameraSpeed = .2f;
 
         public Escenario escenarioU;
         private Objeto car;
         private Animacion animacionDelCoche;
+        private bool initAnimation = false;
         public Game() : base(800, 600)
         {
-            this.escenarioU = new Escenario(new Dictionary<string, Objeto>(),new Vector(0, 0, 0));
-            this.escenarioU.AddObjeto("PlataformaObjeto", this.GetPlataforma());
-            this.escenarioU.AddObjeto("PistaObjeto", this.getPista());
-            Objeto PistaObjeto2 = this.getPista();
-            PistaObjeto2.Rotar(90, new Vector3(0, 1, 0));
-
-            Objeto PistaObjeto3 = this.getPista();
-            PistaObjeto3.Rotar(-90, new Vector3(0, 1, 0));
-
-            Objeto PistaObjeto4 = this.getPista();
-            PistaObjeto4.Rotar(-180, new Vector3(0, 1, 0));
-            this.escenarioU.AddObjeto("PistaObjeto2",PistaObjeto2);
-            this.escenarioU.AddObjeto("PistaObjeto3", PistaObjeto3);
-            this.escenarioU.AddObjeto("PistaObjeto4", PistaObjeto4);
-
-            //-------------------pasto------------------------//
-            Objeto PastoCentro = this.PastoCentro();
-            this.escenarioU.AddObjeto("PastoCentroObjeto", PastoCentro);
+            this.escenarioU = Serializador.DeserializarObjeto<Escenario>("escenario.json");
+            car = Serializador.DeserializarObjeto<Objeto>("car.json");
         }
 
         protected override void OnLoad(EventArgs e)
@@ -52,33 +38,6 @@ namespace Diseño3D
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             GL.Enable(EnableCap.DepthTest);     // si usas profundidad
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha); // <-- modo de mezcla
-
-            car = new Objeto(new Dictionary<string, Parte>(),new Vector(0,0,0));
-            Parte rueda1 = GetChassis(1);
-            car.AddParte("ruedaBackIzq", rueda1);
-
-            Parte rueda2 = Serializador.DeserializarObjeto<Parte>("rueda.json");
-            rueda2.Trasladar(new Vector3(-1.7f,0,0));
-            car.AddParte("ruedaBackDer", rueda2);
-
-
-            Parte rueda3 = GetChassis(3);
-            rueda3.Trasladar(new Vector3(-1.7f, 0, 2.6f));
-            car.AddParte("ruedaFrontIzq", rueda3);
-
-            Parte rueda4 = GetChassis(4);
-            rueda4.Trasladar(new Vector3(0, 0, 2.6f));
-            car.AddParte("ruedaFrontDer", rueda4);
-
-            car.AddParte("bodyParte", this.GetBody());
-            car.AddParte("blackParte", this.GetBlack());
-            car.AddParte("windowParte", this.GetWindow());
-            car.AddParte("bumpersParte", this.GetBumpers());
-            car.AddParte("lightsParte", this.GetLights());
-            car.AddParte("bottomParte", this.GetBottom());
-
-            car.Trasladar(new Vector3(-16, 1.1f, -15));
-            AplicarTransformacionConCentroMasa2(90,new Vector3(0,1,0));
 
             SetupCarAnimation();
             cameraFront.Normalize();
@@ -112,7 +71,8 @@ namespace Diseño3D
             escenarioU.Draw();
 
             car.Draw3(); // O car.Draw()
-            animacionDelCoche.ejecutar(e);
+            if(initAnimation)
+                animacionDelCoche.ejecutar(e);
 
             DrawAxes();
             SwapBuffers();
@@ -124,7 +84,7 @@ namespace Diseño3D
             float velocidadRecta = 4.0f; // Más lento: unidades/segundo (antes 7)
             float duracionTotalGiro = 5.0f; // Más lento: Tiempo total para el giro de 90 grados (antes 3)
             int numeroPasosGiro = 40;       // Más pasos para mayor suavidad (antes 6)
-            float radioArcoGiro = 6.0f;    // Radio del arco de giro (antes 4)
+            float radioArcoGiro = 2.0f;    // Radio del arco de giro (antes 4)
             float radioRueda = 0.4f;
             float anguloSteerRuedasDelanteras = -25.0f; // Grados para "girar" las ruedas delanteras (negativo para derecha)
             float duracionSteering = 0.4f; // Tiempo para girar/enderezar las ruedas delanteras
@@ -141,12 +101,31 @@ namespace Diseño3D
 
             float tiempo = 0f;
 
-            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, direccionXGlobal,direccionZGlobal*-1, 26f, velocidadRecta, radioRueda, tiempo, out tiempo);
+            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, direccionXGlobal,-direccionZGlobal, 28f, velocidadRecta, radioRueda, tiempo, out tiempo);
             AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
-            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, tiempo, out tiempo);
+            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, tiempo, out tiempo,direccionZGlobal);
             AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
 
             AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, direccionZGlobal,direccionXGlobal, 26f, velocidadRecta, radioRueda, tiempo, out tiempo);
+            // Girar ruedas a la derecha nuevamente
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            // Giro de 90 grados hacia la derecha (de +Z a -X)
+            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, tiempo, out tiempo,-direccionXGlobal);
+            // Enderezar ruedas
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            
+            
+            // Avanzar en -X
+            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, -direccionXGlobal, direccionZGlobal, 26f, velocidadRecta, radioRueda, tiempo, out tiempo);
+            // Girar ruedas a la derecha nuevamente
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            // Giro de 90 grados hacia la derecha (de -X a -Z)
+            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, tiempo, out tiempo,-direccionZGlobal);
+            // Enderezar ruedas
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            
+            // Avanzar en -Z
+            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, -direccionZGlobal, -direccionXGlobal, 26f, velocidadRecta, radioRueda, tiempo, out tiempo);
 
         }
 
@@ -191,13 +170,16 @@ namespace Diseño3D
             tiempoFinal = tiempoInicio + duracion;
         }
 
-        void AgregarGiroEnArco(Animacion animacion,Objeto car,float anguloTotal,int pasos,float radioArco,
-        float duracionTotal,float radioRueda,float tiempoInicio,out float tiempoFinal)
+        void AgregarGiroEnArco(Animacion animacion, Objeto car, float anguloTotal, int pasos, float radioArco,
+    float duracionTotal, float radioRueda, float tiempoInicio, out float tiempoFinal, Vector3 direccionInicial)
         {
             float anguloPorPaso = anguloTotal / pasos;
             float duracionPasoRot = (duracionTotal / pasos) * 0.4f;
             float duracionPasoTras = (duracionTotal / pasos) * 0.6f;
             float distanciaPorPaso = radioArco * (Math.Abs(anguloPorPaso) * (float)Math.PI / 180.0f);
+
+            // Normaliza la dirección inicial
+            direccionInicial.Normalize();
 
             float anguloAcumuladoRad = 0f;
             tiempoFinal = tiempoInicio;
@@ -212,9 +194,17 @@ namespace Diseño3D
                 animacion.AddEscena(escenaRot);
                 tiempoFinal += duracionPasoRot;
 
-                // Actualizar ángulo
+                // Actualizar dirección actual girando la dirección inicial por el ángulo acumulado
                 anguloAcumuladoRad += anguloPorPaso * (float)Math.PI / 180.0f;
-                Vector3 direccionActual = new Vector3((float)Math.Cos(anguloAcumuladoRad), 0, -(float)Math.Sin(anguloAcumuladoRad));
+
+                float cos = (float)Math.Cos(anguloAcumuladoRad);
+                float sin = (float)Math.Sin(anguloAcumuladoRad);
+
+                Vector3 direccionActual = new Vector3(
+                    direccionInicial.X * cos - direccionInicial.Z * sin,
+                    0,
+                    direccionInicial.X * sin + direccionInicial.Z * cos
+                );
                 direccionActual.Normalize();
 
                 // Trasladar chasis
@@ -226,6 +216,7 @@ namespace Diseño3D
                 tiempoFinal += duracionPasoTras;
             }
         }
+
 
 
 
@@ -249,7 +240,7 @@ namespace Diseño3D
 
             if (keyboardState.IsKeyDown(Key.Number0))  // Mover hacia adelante
             {
-                //animacionDelCoche.ejecutar();
+                initAnimation = !initAnimation;
             }
 
 
@@ -307,9 +298,11 @@ namespace Diseño3D
 
 
             if (keyboardState.IsKeyDown(Key.P))
-                Serializador.SerializarObjeto<Parte>(this.GetChassis(1),"rueda.json");
+                Serializador.SerializarObjeto<Escenario>(this.escenarioU,"escenario.json");
 
         }
+
+
 
         private Objeto GetPlataforma()
         {
@@ -438,31 +431,31 @@ namespace Diseño3D
             // Base 
             // Parte delantera
             Poligono PastoCentroPo1 = new Poligono(colorBase);
-            PastoCentroPo1.Add(new Vector(-13f, 0, 13f));
+            PastoCentroPo1.Add(new Vector(-13.6f, 0, 13f));
             PastoCentroPo1.Add(new Vector(13f, 0, 13f));
             PastoCentroPo1.Add(new Vector(13f, 1f, 13f));
-            PastoCentroPo1.Add(new Vector(-13f, 1f, 13f));
+            PastoCentroPo1.Add(new Vector(-13.6f, 1f, 13f));
 
             // Parte trasera
             Poligono PastoCentroPo2 = new Poligono(colorBase);
-            PastoCentroPo2.Add(new Vector(-13f, 0, -13f));
+            PastoCentroPo2.Add(new Vector(-13.6f, 0, -13f));
             PastoCentroPo2.Add(new Vector(13f, 0, -13f));
             PastoCentroPo2.Add(new Vector(13f, 1f, -13f));
-            PastoCentroPo2.Add(new Vector(-13f, 1f, -13f));
+            PastoCentroPo2.Add(new Vector(-13.6f, 1f, -13f));
 
             // Parte arriba
             Poligono PastoCentroPo3 = new Poligono(colorBase);
-            PastoCentroPo3.Add(new Vector(-13f, 1f, 13f));
+            PastoCentroPo3.Add(new Vector(-13.6f, 1f, 13f));
             PastoCentroPo3.Add(new Vector(13f, 1f, 13f));
             PastoCentroPo3.Add(new Vector(13f, 1f, -13f));
-            PastoCentroPo3.Add(new Vector(-13f, 1f, -13f));
+            PastoCentroPo3.Add(new Vector(-13.6f, 1f, -13f));
 
             // Parte abajo
             Poligono PastoCentroPo4 = new Poligono(colorBase);
-            PastoCentroPo4.Add(new Vector(-13f, 0, 13f));
+            PastoCentroPo4.Add(new Vector(-13.6f, 0, 13f));
             PastoCentroPo4.Add(new Vector(13f, 0, 13f));
             PastoCentroPo4.Add(new Vector(13f, 0, -13f));
-            PastoCentroPo4.Add(new Vector(-13f, 0, -13f));
+            PastoCentroPo4.Add(new Vector(-13.6f, 0, -13f));
 
             // Lado derecho
             Poligono PastoCentroPo5 = new Poligono(colorBase);
@@ -473,10 +466,10 @@ namespace Diseño3D
 
             // Lado izquierdo
             Poligono PastoCentroPo6 = new Poligono(colorBase);
-            PastoCentroPo6.Add(new Vector(-13f, 0, 13f));
-            PastoCentroPo6.Add(new Vector(-13f, 0, -13f));
-            PastoCentroPo6.Add(new Vector(-13f, 1f, -13f));
-            PastoCentroPo6.Add(new Vector(-13f, 1f, 13f));
+            PastoCentroPo6.Add(new Vector(-13.6f, 0, 13f));
+            PastoCentroPo6.Add(new Vector(-13.6f, 0, -13f));
+            PastoCentroPo6.Add(new Vector(-13.6f, 1f, -13f));
+            PastoCentroPo6.Add(new Vector(-13.6f, 1f, 13f));
 
             Parte PastoCentroParte = new Parte();
             PastoCentroParte.Add("PastoCentroPo1", PastoCentroPo1);
