@@ -14,7 +14,6 @@ namespace Diseño3D
 
     public class Transformacion
     {
-        //public IDibujable Objeto { get; set; }
         public IterableObject objeto { get; set; }
         public TipoTransformacion Tipo { get; set; }
         public Vector3 Eje { get; set; }
@@ -90,8 +89,6 @@ namespace Diseño3D
             }
         }
 
-        // Este método va dentro de la clase Diseño3D.Accion
-
         public void AplicarTransformacion(Transformacion transformacionActual, float FPS)
         {
             // Validaciones básicas
@@ -101,28 +98,28 @@ namespace Diseño3D
             }
             if (this.duracionTiempo <= 0)
             {
-                return; // Evitar división por cero y comportamiento indefinido.
+                return; 
             }
             if (FPS <= 0)
             {
-                return; // Evitar división por cero.
+                return;
             }
 
             float tiempoDelFrame = 1.0f / FPS;
 
-            // Para Rotar y Trasladar, calculamos un delta lineal del valor total.
+            // delta lineal del valor total.
             float cantidadLinealParaEsteFrame = (transformacionActual.ValorTransformacion / this.duracionTiempo) * tiempoDelFrame;
 
             switch (transformacionActual.Tipo)
             {
                 case TipoTransformacion.Rotar:
-                    Vector centroMasaRot = transformacionActual.objeto.CalcularCentroMasa(); // Asume que esto devuelve tu clase Vector
+                    Vector centroMasaRot = transformacionActual.objeto.CalcularCentroMasa(); 
                     transformacionActual.objeto.Rotar(cantidadLinealParaEsteFrame, transformacionActual.Eje, centroMasaRot);
                     break;
 
                 case TipoTransformacion.Trasladar:
                     Vector3 direccionTrasl = transformacionActual.Eje;
-                    if (direccionTrasl.LengthSquared > 0.0001f) // Evitar normalizar vector cero y problemas de precisión
+                    if (direccionTrasl.LengthSquared > 0.0001f) 
                     {
                         direccionTrasl.Normalize();
                     }

@@ -53,7 +53,6 @@ namespace Diseño3D
                 Accion accion = listaAcciones[i];
                 if (accion.HayTransformaciones())
                 {
-                    //ejecutar las acciones correspondientes
                     accion.Ejecutar(tiempoTranscurrido, FPS);
                 }
             }

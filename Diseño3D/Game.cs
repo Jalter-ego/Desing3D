@@ -17,8 +17,8 @@ namespace Diseño3D
         public bool isObject = true;
 
 
-        private Vector3 cameraPosition = new Vector3(4f, 4f, 4f);
-        private Vector3 cameraFront = new Vector3(0f, 0f, 1f);
+        private Vector3 cameraPosition = new Vector3(0f, 5f, 0f);
+        private Vector3 cameraFront = new Vector3(-1f, 0f, 0f);
         private Vector3 cameraUp = Vector3.UnitY;
         private readonly float cameraSpeed = .2f;
 
@@ -26,7 +26,7 @@ namespace Diseño3D
         private Objeto car;
         private Animacion animacionDelCoche;
         private bool initAnimation = false;
-        public Game() : base(800, 600)
+        public Game() : base(1920, 1080)
         {
             this.escenarioU = Serializador.DeserializarObjeto<Escenario>("escenario.json");
             car = Serializador.DeserializarObjeto<Objeto>("car.json");
@@ -36,7 +36,7 @@ namespace Diseño3D
         {
             base.OnLoad(e);
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            GL.Enable(EnableCap.DepthTest);     // si usas profundidad
+            GL.Enable(EnableCap.DepthTest);  
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha); // <-- modo de mezcla
 
             SetupCarAnimation();
@@ -69,8 +69,8 @@ namespace Diseño3D
                 cameraUp);
             GL.LoadMatrix(ref modelview);
             escenarioU.Draw();
+            car.Draw3();
 
-            car.Draw3(); // O car.Draw()
             if(initAnimation)
                 animacionDelCoche.ejecutar(e);
 
@@ -80,18 +80,16 @@ namespace Diseño3D
 
         private void SetupCarAnimation()
         {
-            // --- Parámetros Configurables ---
-            float velocidadRecta = 4.0f; // Más lento: unidades/segundo (antes 7)
-            float duracionTotalGiro = 5.0f; // Más lento: Tiempo total para el giro de 90 grados (antes 3)
-            int numeroPasosGiro = 40;       // Más pasos para mayor suavidad (antes 6)
-            float radioArcoGiro = 2.0f;    // Radio del arco de giro (antes 4)
+            float velocidadRecta = 4.0f; // unidades/segundo 
+            float duracionTotalGiro = 5.0f; // Tiempo total para el giro de 90 grados
+            int numeroPasosGiro = 40;       // Más pasos para mayor suavidad
+            float radioArcoGiro = 2.0f;    // Radio del arco de giro 
             float radioRueda = 0.4f;
             float anguloSteerRuedasDelanteras = -25.0f; // Grados para "girar" las ruedas delanteras (negativo para derecha)
             float duracionSteering = 0.4f; // Tiempo para girar/enderezar las ruedas delanteras
 
-            // --- Vectores y Ejes Base ---
-            Vector3 direccionXGlobal = new Vector3(1, 0, 0);  // Mover en +X global
-            Vector3 direccionZGlobal = new Vector3(0, 0, 1);  // Mover en +Z global
+            Vector3 direccionXGlobal = new Vector3(1, 0, 0);  
+            Vector3 direccionZGlobal = new Vector3(0, 0, 1);  
             Vector3 ejeYGlobal = new Vector3(0, 1, 0);      // Eje de rotación para el chasis y steering de ruedas
 
             string[] nombresRuedasTodas = { "ruedaBackIzq", "ruedaBackDer", "ruedaFrontIzq", "ruedaFrontDer" };
@@ -101,31 +99,48 @@ namespace Diseño3D
 
             float tiempo = 0f;
 
-            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, direccionXGlobal,-direccionZGlobal, 28f, velocidadRecta, radioRueda, tiempo, out tiempo);
-            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
-            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, tiempo, out tiempo,direccionZGlobal);
-            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            // Avanzar en +X
+            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, direccionXGlobal,-direccionZGlobal, 28f, 
+                velocidadRecta, radioRueda, tiempo, out tiempo);
+            // Girar ruedas a la derecha
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras,
+                tiempo, duracionSteering, out tiempo);
+            // Girar 90 grados a la derecha
+            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda,
+                tiempo, out tiempo,direccionZGlobal);
+            //enderezar ruedas
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, 
+                tiempo, duracionSteering, out tiempo);
 
-            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, direccionZGlobal,direccionXGlobal, 26f, velocidadRecta, radioRueda, tiempo, out tiempo);
+            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, direccionZGlobal,direccionXGlobal, 26f, 
+                velocidadRecta, radioRueda, tiempo, out tiempo);
             // Girar ruedas a la derecha nuevamente
-            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras, 
+                tiempo, duracionSteering, out tiempo);
             // Giro de 90 grados hacia la derecha (de +Z a -X)
-            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, tiempo, out tiempo,-direccionXGlobal);
+            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, 
+                tiempo, out tiempo,-direccionXGlobal);
             // Enderezar ruedas
-            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, 
+                tiempo, duracionSteering, out tiempo);
             
             
             // Avanzar en -X
-            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, -direccionXGlobal, direccionZGlobal, 26f, velocidadRecta, radioRueda, tiempo, out tiempo);
+            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, -direccionXGlobal, direccionZGlobal, 26f, 
+                velocidadRecta, radioRueda, tiempo, out tiempo);
             // Girar ruedas a la derecha nuevamente
-            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, anguloSteerRuedasDelanteras, 
+                tiempo, duracionSteering, out tiempo);
             // Giro de 90 grados hacia la derecha (de -X a -Z)
-            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, tiempo, out tiempo,-direccionZGlobal);
+            AgregarGiroEnArco(animacionDelCoche, car, -90f, numeroPasosGiro, radioArcoGiro, duracionTotalGiro, radioRueda, 
+                tiempo, out tiempo,-direccionZGlobal);
             // Enderezar ruedas
-            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, tiempo, duracionSteering, out tiempo);
+            AgregarSteerRuedas(animacionDelCoche, car, nombresRuedasDelanteras, ejeYGlobal, -anguloSteerRuedasDelanteras, 
+                tiempo, duracionSteering, out tiempo);
             
             // Avanzar en -Z
-            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, -direccionZGlobal, -direccionXGlobal, 26f, velocidadRecta, radioRueda, tiempo, out tiempo);
+            AgregarAvanceRecto(animacionDelCoche, car, nombresRuedasTodas, -direccionZGlobal, -direccionXGlobal, 26f,
+                velocidadRecta, radioRueda, tiempo, out tiempo);
 
         }
 
@@ -230,13 +245,8 @@ namespace Diseño3D
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            float tiempoDelta = (float)e.Time; // Tiempo del frame en segundos
             var keyboardState = Keyboard.GetState();
-            // --- ACTUALIZAR ANIMACIÓN ---
-            if (animacionDelCoche != null)
-            {
-                //animacionDelCoche.Actualizar(tiempoDelta); // << NUEVO
-            }
+            
 
             if (keyboardState.IsKeyDown(Key.Number0))  // Mover hacia adelante
             {
